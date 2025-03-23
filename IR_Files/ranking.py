@@ -41,6 +41,16 @@ class BM25:
                         scores[doc_id] = 0
                     scores[doc_id] += self.bm25_score(doc_id, query_terms)
         return sorted(scores.items(), key=lambda item: item[1], reverse=True)
+    
+    def neural(self, corpus, queries, top_k=1000):
+        """
+        Search method compatible with BEIR framework
+        """
+        results = {}
+        for query_id, query in queries.items():
+            ranked_docs = self.rank_documents(query)
+            results[query_id] = {doc_id: score for doc_id, score in ranked_docs[:top_k]}
+        return results    
 
 def normalize_scores(ranked_docs):
         if not ranked_docs:

@@ -5,6 +5,7 @@ from preprocessing import *
 from indexing import *
 from ranking import *
 from utils import *
+from bert_ranking import BERT_Ranker, normalize_scores
 import pytrec_eval
 import json
 

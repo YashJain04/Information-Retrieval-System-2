@@ -67,7 +67,7 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
     
     # Initialize the retriever with the chosen score function
     if model_type != 'BM25':
-        retriever = EvaluateRetrieval(model, score_function=scoring)
+        retriever = EvaluateRetrieval(model, k_values=[100], score_function=scoring)
     
     # Convert queries into the expected dictionary format.
     # For BM25, pass the tokens as a list; for dense models, join them into a string.
@@ -116,7 +116,7 @@ def neural_save_results(results, output_file):
         
         for rank, (doc_id, score) in enumerate(normalized_ranked, start=1):
             # Build the formatted line
-            line = f"{query_id} Q0 {doc_id} {rank} {score} top_scores_run"
+            line = f"{query_id} Q0 {doc_id} {rank} {score} top_100_best_run"
             lines.append(line)
     
     # Write all lines to the output file

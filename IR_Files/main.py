@@ -78,6 +78,8 @@ print("")
 start_time = time.time() # start the timer
 model_type = "BERT"
 model_name = "msmarco-distilbert-base-v3"
+# model_type = "BM25"
+# model_name = None
 neural_results = neural_rank_documents(model_type, model_name, documents, inverted_index, doc_lengths, queries, False)
 end_time = time.time() # end the timer
 results_file = '../Results_Scores/NeuralScores.txt' # get results file

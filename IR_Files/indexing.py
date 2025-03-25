@@ -30,7 +30,6 @@ def save_inverted_index(inverted_index, file_path):
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(inverted_index, file, indent=4)
 
-
 # ==============================================
 # below is for when it's being run only on heads
 

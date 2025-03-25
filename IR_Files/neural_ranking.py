@@ -24,7 +24,7 @@ def create_model(model_type, model_name, documents, inverted_index, documents_le
         return DRES(models.UseQA(model_name))
     
     # CROSS ENCODER model
-    elif model_type == 'cross_encoder':
+    elif model_type == 'cross-encoder':
         return CrossEncoder(model_name)
     
     # INVALID model

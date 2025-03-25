@@ -1,6 +1,6 @@
 import json
-from ranking import BM25
-from ranking import normalize_scores
+import torch
+from ranking import BM25, normalize_scores
 from beir.retrieval import models
 from beir.retrieval.search.dense import DenseRetrievalExactSearch as DRES
 from beir.retrieval.evaluation import EvaluateRetrieval
@@ -11,30 +11,27 @@ def create_model(model_type, model_name, documents, inverted_index, documents_le
     '''
     Load a specific model in [BM25, BERT, UNIVERSAL SENTENCE ENCODER]
     '''
-    # INITIAL our model
     if model_type == 'BM25':
         return BM25(inverted_index, documents_length)
     
-    # BERT model
     elif model_type == 'BERT':
-        return DRES(models.SentenceBERT(model_name), batch_size=16)
+        # Use GPU if available and increase the batch size for speed
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        return DRES(models.SentenceBERT(model_name, device=device), batch_size=64)
     
-    # UNIVERSAL SENTENCE ENCODER model
     elif model_type == 'UNI_SENT_ENCODER':
-        return DRES(models.UseQA(model_name))
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        return DRES(models.UseQA(model_name, device=device), batch_size=64)
     
-    # CROSS ENCODER model
     elif model_type == 'cross-encoder':
         return CrossEncoder(model_name)
     
-    # INVALID model
     else:
-        print('This is an unknown model type. Ending program.')
         raise ValueError(f'Unknown model type: {model_type}')
 
 def total_score(bert_scores, bert_weight, uni_sent_encoder_scores, uni_sent_encoder_weight):
     '''
-    Create a total score which will be used for MAP evaluation
+    Create a total score which will be used for MAP evaluation.
     '''
     final_score = {}
 
@@ -51,7 +48,7 @@ def total_score(bert_scores, bert_weight, uni_sent_encoder_scores, uni_sent_enco
 
 def neural_rank_documents(model_type, model_name, documents, inverted_index, documents_length, queries, reranking):
     '''
-    Rank the documents
+    Rank the documents using the specified model.
     '''
     model = create_model(model_type, model_name, documents, inverted_index, documents_length)
     
@@ -63,12 +60,12 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
             'text': ' '.join(doc['TEXT'])
         }
         
-    # Determine which scoring function to use
+    # Use cosine similarity for dense models
     scoring = 'cos_sim'
     
     # Initialize the retriever with the chosen score function
     if model_type != 'BM25':
-        retriever = EvaluateRetrieval(model, score_function = scoring)
+        retriever = EvaluateRetrieval(model, score_function=scoring)
     else:
         retriever = EvaluateRetrieval(model)
     
@@ -86,7 +83,7 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
     else:
         results = model.neural(corpus, query_dict)
         
-    # Refine results with re-ranking using a CROSSENCODER
+    # Refine results with re-ranking using a CROSSENCODER if requested
     if reranking:
         cross_encoder_model = create_model("cross-encoder", "cross-encoder/ms-marco-electra-base", None, None, None)
         reranker = Rerank(cross_encoder_model, batch_size=128)
@@ -95,9 +92,27 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
     return results
 
 def neural_save_results(results, output_file):
+    '''
+    Normalize each query’s scores using normalize_scores and save results to a file.
+    '''
     final_results = {}
     for query_id, docs in results.items():
-        final_results[query_id] = [(doc_id, float(score)) for doc_id, score in docs.items()]
+        # Convert docs (dict) to a sorted list of (doc_id, score) pairs
+        ranked_list = sorted(docs.items(), key=lambda x: x[1], reverse=True)
+        normalized_ranked = normalize_scores(ranked_list)
+        final_results[query_id] = normalized_ranked
     
     with open(output_file, 'w') as file:
         json.dump(final_results, file, indent=4)
+
+def normalize_scores(ranked_docs):
+    """
+    Normalize scores to [0,1] range.
+    """
+    if not ranked_docs:
+        return []
+    max_score = max(score for _, score in ranked_docs)
+    min_score = min(score for _, score in ranked_docs)
+    if max_score == min_score:
+        return [(doc_id, 1.0) for doc_id, _ in ranked_docs]
+    return [(doc_id, (score - min_score) / (max_score - min_score)) for doc_id, score in ranked_docs]

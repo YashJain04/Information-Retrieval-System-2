@@ -1,6 +1,6 @@
 .DS_STORE
-Results_Scores/inverted_index.json
-Results_Scores/preprocessed_documents.json
-Results_Scores/preprocessed_queries.json
-Results_Scores/AllScoresAllQueries.txt
+Results_Scores/Building/inverted_index.json
+Results_Scores/Building/preprocessed_documents.json
+Results_Scores/Building/preprocessed_queries.json
+Results_Scores/BM25/AllScoresAllQueries.txt
 IR_Files/__pycache__/

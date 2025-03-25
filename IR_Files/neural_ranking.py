@@ -1,13 +1,13 @@
-import tensorflow as tf  # Import tf first
+import tensorflow as tf
 import json
 import torch
-from ranking import BM25, normalize_scores
+from ranking import BM25
+from utils import *
 from beir.retrieval import models
 from beir.retrieval.search.dense import DenseRetrievalExactSearch as DRES
 from beir.retrieval.evaluation import EvaluateRetrieval
 from beir.reranking.models import CrossEncoder
 from beir.reranking import Rerank
-import tensorflow as tf  # Import tf first
 
 def create_model(model_type, model_name, documents, inverted_index, documents_length):
     '''
@@ -53,7 +53,7 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
     Rank the documents using the specified model.
     '''
     model = create_model(model_type, model_name, documents, inverted_index, documents_length)
-    
+
     # Build a corpus dictionary from the documents
     corpus = {}
     for doc in documents:
@@ -68,22 +68,33 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
     # Initialize the retriever with the chosen score function
     if model_type != 'BM25':
         retriever = EvaluateRetrieval(model, score_function=scoring)
-    else:
-        retriever = EvaluateRetrieval(model)
     
-    # Convert queries into the expected dictionary format
+    # Convert queries into the expected dictionary format.
+    # For BM25, pass the tokens as a list; for dense models, join them into a string.
     query_dict = {}
     for query in queries:
-        title = query.get('title', [])
-        query_text = query.get('query', [])
-        narrative = query.get('narrative', [])
-        query_dict[query['num']] = ' '.join(title + query_text + narrative)
+        tokens = query.get('title', []) + query.get('query', []) + query.get('narrative', [])
+        if model_type == 'BM25':
+            query_dict[query['num']] = tokens
+        else:
+            query_dict[query['num']] = ' '.join(tokens)
     
     # Retrieve results based on model type
     if model_type != 'BM25':
         results = retriever.retrieve(corpus, query_dict)
     else:
-        results = model.neural(corpus, query_dict)
+        results = None
+        print("Ranking top documents for all queries and creating associated file")
+        writeResults("../Results_Scores/BM25/TopScoresAllQueries.txt", queries, model, "top_scores_run")
+
+        print("\nRanking top 10 documents for the first 2 queries and creating associated file")
+        writeResultsTop10First2("../Results_Scores/BM25/Top10AnswersFirst2Queries.txt", queries, model, "top_10_first_2_run")
+
+        print("\nRanking all documents for all queries and creating associated file")
+        writeResultsAll("../Results_Scores/BM25/AllScoresAllQueries.txt", queries, model, "all_scores_run")
+
+        print("\nRanking top 100 documents for all queries and creating associated file. This is the file that will be used for final evaluation.")
+        writeResultsTop100("../Results_Scores/BM25/Results.txt", queries, model, "top_100_best_run")
         
     # Refine results with re-ranking using a CROSSENCODER if requested
     if reranking:
@@ -94,20 +105,25 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
     return results
 
 def neural_save_results(results, output_file):
-    '''
-    Normalize each query’s scores using normalize_scores and save results to a file.
-    '''
-    final_results = {}
+    lines = []
+    # Optionally, add a header line if required:
+    # lines.append("query_id Q0 doc_id rank score tag")
+    
     for query_id, docs in results.items():
         # Convert docs (dict) to a sorted list of (doc_id, score) pairs
         ranked_list = sorted(docs.items(), key=lambda x: x[1], reverse=True)
-        normalized_ranked = normalize_scores(ranked_list)
-        final_results[query_id] = normalized_ranked
+        normalized_ranked = normalize_neural(ranked_list)
+        
+        for rank, (doc_id, score) in enumerate(normalized_ranked, start=1):
+            # Build the formatted line
+            line = f"{query_id} Q0 {doc_id} {rank} {score} top_scores_run"
+            lines.append(line)
     
+    # Write all lines to the output file
     with open(output_file, 'w') as file:
-        json.dump(final_results, file, indent=4)
+        file.write("\n".join(lines))
 
-def normalize_scores(ranked_docs):
+def normalize_neural(ranked_docs):
     """
     Normalize scores to [0,1] range.
     """

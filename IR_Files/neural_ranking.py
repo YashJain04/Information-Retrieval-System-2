@@ -1,3 +1,4 @@
+import tensorflow as tf  # Import tf first
 import json
 import torch
 from ranking import BM25, normalize_scores
@@ -6,6 +7,7 @@ from beir.retrieval.search.dense import DenseRetrievalExactSearch as DRES
 from beir.retrieval.evaluation import EvaluateRetrieval
 from beir.reranking.models import CrossEncoder
 from beir.reranking import Rerank
+import tensorflow as tf  # Import tf first
 
 def create_model(model_type, model_name, documents, inverted_index, documents_length):
     '''

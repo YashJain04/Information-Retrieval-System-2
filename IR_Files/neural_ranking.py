@@ -11,19 +11,10 @@ from beir.reranking import Rerank
 
 def create_model(model_type, model_name, documents, inverted_index, documents_length):
     '''
-    Load a specific model in [BM25, BERT, UNIVERSAL SENTENCE ENCODER]
+    Load a specific model in [BM25, BERT, ELECTRA]
     '''
     if model_type == 'BM25':
         return BM25(inverted_index, documents_length)
-    
-    elif model_type == 'BERT':
-        # Use GPU if available and increase the batch size for speed
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        return DRES(models.SentenceBERT(model_name, device=device), batch_size=64)
-    
-    elif model_type == 'UNI_SENT_ENCODER':
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        return DRES(models.UseQA(model_name, device=device), batch_size=64)
     
     elif model_type == 'cross-encoder':
         return CrossEncoder(model_name)
@@ -61,45 +52,36 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
             'title': ' '.join(doc['HEAD']),
             'text': ' '.join(doc['TEXT'])
         }
-        
-    # Use cosine similarity for dense models
-    scoring = 'cos_sim'
-    
-    # Initialize the retriever with the chosen score function
-    if model_type != 'BM25':
-        retriever = EvaluateRetrieval(model, k_values=[100], score_function=scoring)
-    
+
     # Convert queries into the expected dictionary format.
     # For BM25, pass the tokens as a list; for dense models, join them into a string.
     query_dict = {}
     for query in queries:
         tokens = query.get('title', []) + query.get('query', []) + query.get('narrative', [])
-        if model_type == 'BM25':
-            query_dict[query['num']] = tokens
-        else:
-            query_dict[query['num']] = ' '.join(tokens)
+        query_dict[query['num']] = ' '.join(tokens)
     
-    # Retrieve results based on model type
-    if model_type != 'BM25':
-        results = retriever.retrieve(corpus, query_dict)
-    else:
-        results = None
-        print("Ranking top documents for all queries and creating associated file")
-        writeResults("../Results_Scores/BM25/TopScoresAllQueries.txt", queries, model, "top_scores_run")
+    # retrieve results
+    print("Ranking top documents for all queries and creating associated file")
+    writeResults("../Results_Scores/BM25/TopScoresAllQueries.txt", queries, model, "top_scores_run")
 
-        print("\nRanking top 10 documents for the first 2 queries and creating associated file")
-        writeResultsTop10First2("../Results_Scores/BM25/Top10AnswersFirst2Queries.txt", queries, model, "top_10_first_2_run")
+    print("\nRanking top 10 documents for the first 2 queries and creating associated file")
+    writeResultsTop10First2("../Results_Scores/BM25/Top10AnswersFirst2Queries.txt", queries, model, "top_10_first_2_run")
 
-        print("\nRanking all documents for all queries and creating associated file")
-        writeResultsAll("../Results_Scores/BM25/AllScoresAllQueries.txt", queries, model, "all_scores_run")
+    print("\nRanking all documents for all queries and creating associated file")
+    writeResultsAll("../Results_Scores/BM25/AllScoresAllQueries.txt", queries, model, "all_scores_run")
 
-        print("\nRanking top 100 documents for all queries and creating associated file. This is the file that will be used for final evaluation.")
-        writeResultsTop100("../Results_Scores/BM25/Results.txt", queries, model, "top_100_best_run")
+    print("\nRanking top 100 documents for all queries and creating associated file. This is the file that will be used for final evaluation.")
+    results = writeResultsTop100("../Results_Scores/BM25/Results.txt", queries, model, "top_100_best_run")
         
     # Refine results with re-ranking using a CROSSENCODER if requested
-    if reranking:
-        cross_encoder_model = create_model("cross-encoder", "cross-encoder/ms-marco-electra-base", None, None, None)
-        reranker = Rerank(cross_encoder_model, batch_size=128)
+    if reranking == "BERT":
+        BERT_model = create_model("cross-encoder", "cross-encoder/nli-distilroberta-base", None, None, None)
+        reranker = Rerank(BERT_model, batch_size=128)
+        results = reranker.rerank(corpus, query_dict, results, top_k=100)
+    
+    elif reranking == "ELECTRA":
+        ELECTRA_model = create_model("cross-encoder", "cross-encoder/ms-marco-electra-base", None, None, None)
+        reranker = Rerank(ELECTRA_model, batch_size=128)
         results = reranker.rerank(corpus, query_dict, results, top_k=100)
     
     return results

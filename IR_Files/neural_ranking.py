@@ -2,6 +2,7 @@ import tensorflow as tf
 import json
 import torch
 from ranking import BM25
+from customizer import CustomRerank
 from utils import *
 from beir.retrieval import models
 from beir.retrieval.search.dense import DenseRetrievalExactSearch as DRES
@@ -73,10 +74,10 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
     print("\nRanking top 100 documents for all queries and creating associated file. This is the file that will be used for final evaluation.")
     results = writeResultsTop100("../Results_Scores/BM25/Results.txt", queries, model, "top_100_best_run")
         
-    # Refine results with re-ranking using a CROSSENCODER if requested
+    # Refine results with re-ranking using a CROSSENCODER with different models
     if reranking == "BERT":
         BERT_model = create_model("cross-encoder", "cross-encoder/nli-distilroberta-base", None, None, None)
-        reranker = Rerank(BERT_model, batch_size=128)
+        reranker = CustomRerank(BERT_model, batch_size=128)
         results = reranker.rerank(corpus, query_dict, results, top_k=100)
     
     elif reranking == "ELECTRA":
@@ -88,20 +89,22 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
 
 def neural_save_results(results, output_file):
     lines = []
-    # Optionally, add a header line if required:
-    # lines.append("query_id Q0 doc_id rank score tag")
-    
     for query_id, docs in results.items():
-        # Convert docs (dict) to a sorted list of (doc_id, score) pairs
-        ranked_list = sorted(docs.items(), key=lambda x: x[1], reverse=True)
+        # Check if docs is a list or dict
+        if isinstance(docs, list):
+            # If it's a list, sort the list of (doc_id, score) tuples.
+            ranked_list = sorted(docs, key=lambda x: x[1], reverse=True)
+        else:
+            # Otherwise, if it's a dict, sort its items.
+            ranked_list = sorted(docs.items(), key=lambda x: x[1], reverse=True)
+        
         normalized_ranked = normalize_neural(ranked_list)
         
         for rank, (doc_id, score) in enumerate(normalized_ranked, start=1):
-            # Build the formatted line
             line = f"{query_id} Q0 {doc_id} {rank} {score} top_100_best_run"
             lines.append(line)
     
-    # Write all lines to the output file
+    # Write all lines to the output file.
     with open(output_file, 'w') as file:
         file.write("\n".join(lines))
 

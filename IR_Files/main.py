@@ -131,9 +131,11 @@ print(f"\nTime taken to complete STEP 4.3 - MINI_LM MODEL RE-RANKING: {end_time 
 print("")
 print("---------------------------------------------------------------------------------------")
 
-# STEP 5 - Computing MAP Scores Through PYTREC_EVAL
+# STEP 5 - Computing MAP and P@10 Scores Through PYTREC_EVAL
+start_time = time.time() # start the timer
 print("---------------------------------------------------------------------------------------")
-print("\nRunning The TREC_EVAL to retrieve the MAP Scores")
+print("")
+print("Running The TREC_EVAL to retrieve the MAP Scores")
 
 def read_qrel(file_path):
     '''
@@ -191,17 +193,17 @@ run_electra = read_run(run_electra)
 run_minilm = read_run(run_minilm)
 
 # evaluate using pytrec_eval
-evaluator = pytrec_eval.RelevanceEvaluator(qrel, {'map', 'ndcg'})
+evaluator = pytrec_eval.RelevanceEvaluator(qrel, {'map', 'P_10'})
 results_bm25 = evaluator.evaluate(run_bm25)
 results_bert = evaluator.evaluate(run_bert)
 results_electra = evaluator.evaluate(run_electra)
 results_minilm = evaluator.evaluate(run_minilm)
 
 # save the results to a file
-output_file_bm25 = '../Results_Scores/MAP/BM25_MAP_SCORE.json'
-output_file_bert = '../Results_Scores/MAP/BERT_MAP_SCORE.json'
-output_file_electra = '../Results_Scores/MAP/ELECTRA_MAP_SCORE.json'
-output_file_minilm = '../Results_Scores/MAP/MINI_LM_MAP_SCORE.json'
+output_file_bm25 = '../Results_Scores/MAP_P10/BM25_MAP_P10_SCORE.json'
+output_file_bert = '../Results_Scores/MAP_P10/BERT_MAP_P10_SCORE.json'
+output_file_electra = '../Results_Scores/MAP_P10/ELECTRA_MAP_P10_SCORE.json'
+output_file_minilm = '../Results_Scores/MAP_P10/MINI_LM_MAP_P10_SCORE.json'
 
 with open(output_file_bm25, 'w') as f:
     json.dump(results_bm25, f, indent=1)
@@ -238,13 +240,47 @@ print("The average MAP Score for the INITIAL BM25 MODEL is : ", total_map_bm25)
 print("The average MAP Score for the BERT MODEL is: ", total_map_bert)
 print("The average MAP Score for the ELECTRA MODEL is: ", total_map_electra)
 print("The average MAP Score for the MINI LM MODEL is: ", total_map_minilm)
-print("STEP 5 COMPLETE")
+
+end_time = time.time() # end the timer
+print(f"\nTime taken to complete STEP 5 - MAP COMPUTATION: {end_time - start_time:.2f} seconds")
 print("")
 print("---------------------------------------------------------------------------------------")
 
-# STEP 6 - P@10
+# STEP 6 - Computing P@10
+start_time = time.time() # start the timer
+print("---------------------------------------------------------------------------------------")
+print("")
+print("Computing P@10 for the BM25 MODEL.")
+print("Computing P@10 for the BERT MODEL.")
+print("Computing P@10 for the ELECTRA MODEL.")
+print("Computing P@10 for the MINI_LM MODEL.")
+
+# get the average P@10 score - average P@10 for all queries
+total_p10_bm25 = sum(results_bm25[query]['P_10'] for query in results_bm25) / len(results_bm25)
+total_p10_bert = sum(results_bert[query]['P_10'] for query in results_bert) / len(results_bert)
+total_p10_electra = sum(results_electra[query]['P_10'] for query in results_electra) / len(results_electra)
+total_p10_minilm = sum(results_minilm[query]['P_10'] for query in results_minilm) / len(results_minilm)
+
+# round to 4 decimal places
+total_p10_bm25 = round(total_p10_bm25, 4)
+total_p10_bert = round(total_p10_bert, 4)
+total_p10_electra = round(total_p10_electra, 4)
+total_p10_minilm = round(total_p10_minilm, 4)
+
+# print the average P@10 score
+print("The average P@10 Score for the INITIAL BM25 MODEL is : ", total_p10_bm25)
+print("The average P@10 Score for the BERT MODEL is: ", total_p10_bert)
+print("The average P@10 Score for the ELECTRA MODEL is: ", total_p10_electra)
+print("The average P@10 Score for the MINI LM MODEL is: ", total_p10_minilm)
+
+end_time = time.time() # end the timer
+print(f"\nTime taken to complete STEP 6 - P@10 COMPUTATION: {end_time - start_time:.2f} seconds")
+print("")
+print("---------------------------------------------------------------------------------------")
+
+# STEP 7 (EXTRA) - Top 10 Documents First 2 Queries
 start_time = time.time()  # start the timer
-def rename_last_column(line, new_name="P@10"):
+def rename_last_column(line, new_name="top_10_documents_first_2_test.tsv_queries_run"):
     line = line.strip()
     if not line:
         return ""
@@ -252,7 +288,7 @@ def rename_last_column(line, new_name="P@10"):
     parts[-1] = new_name
     return " ".join(parts) + "\n"
 
-def compute_P10(input_file, output_file, skip_lines=80735):
+def compute_top_10_documents_first_2_queries(input_file, output_file, skip_lines=80735):
     with open(input_file, 'r') as f:
         # Skip the first skip_lines lines
         for _ in range(skip_lines):
@@ -304,24 +340,24 @@ def compute_P10(input_file, output_file, skip_lines=80735):
 
 print("---------------------------------------------------------------------------------------")
 print("")
-print("Computing P@10 for the INITIAL BM25 MODEL.")
-output_dir = "../Results_Scores/P@10"  # define directories and output folder
+print("Computing Top 10 Documents First 2 Queries for the INITIAL BM25 MODEL.")
+output_dir = "../Results_Scores/TOP_10_DOCS_FIRST_2_QUERIES"  # define directories and output folder
 os.makedirs(output_dir, exist_ok=True)
 bm25_source = "../Results_Scores/BM25/Top10AnswersFirst2Queries.txt"
-bm25_dest = os.path.join(output_dir, "BM25_P@10.txt")
+bm25_dest = os.path.join(output_dir, "BM25_TOP_10_DOCS_FIRST_2_QUERIES.txt")
 with open(bm25_source, 'r') as f_in, open(bm25_dest, 'w') as f_out:
     for line in f_in:
         f_out.write(rename_last_column(line))
-print("Computing P@10 for the BERT MODEL.")
-print("Computing P@10 for the ELECTRA MODEL.")
-print("Computing P@10 for the MINI LM MODEL.")
+print("Computing Top 10 Documents First 2 Queries for the BERT MODEL.")
+print("Computing Top 10 Documents First 2 Queries for the ELECTRA MODEL.")
+print("Computing Top 10 Documents First 2 Queries for the MINI LM MODEL.")
 models = ["BERT", "ELECTRA", "MINI_LM"]
-print("Processed ../Results_Scores/BM25/Top10AnswersFirst2Queries.txt and wrote results to ../Results_Scores/P@10/BM25_P@10.txt")
+print("Processed ../Results_Scores/BM25/Top10AnswersFirst2Queries.txt and wrote results to ../Results_Scores/TOP_10_DOCS_FIRST_2_QUERIES/BM25_TOP_10_DOCS_FIRST_2_QUERIES.txt")
 for model in models:
     input_path = f"../Results_Scores/{model}/Results.txt"
-    output_path = os.path.join(output_dir, f"{model}_P@10.txt")
-    compute_P10(input_path, output_path)
+    output_path = os.path.join(output_dir, f"{model}_TOP_10_DOCS_FIRST_2_QUERIES.txt")
+    compute_top_10_documents_first_2_queries(input_path, output_path)
 end_time = time.time()  # end the timer
-print(f"Time taken to complete STEP 6 - P@10: {end_time - start_time:.2f} seconds")
+print(f"Time taken to complete STEP 7 - TOP 10 DOCUMENTS FIRST 2 QUERIES: {end_time - start_time:.2f} seconds")
 print("")
 print("---------------------------------------------------------------------------------------")

@@ -6,6 +6,7 @@ from neural_ranking import *
 import time
 import pytrec_eval
 import json
+import os
 
 # file directories
 doc_folder_path = '../scifact/corpus.jsonl'
@@ -88,47 +89,47 @@ print(f"\nTime taken to complete STEP 4.0 - BM25 Model Ranking: {end_time - star
 print("")
 print("---------------------------------------------------------------------------------------")
 
-# # STEP 4.1 - Neural Ranking (BERT RERANK)
-# start_time = time.time() # start the timer
-# print("---------------------------------------------------------------------------------------")
-# print("")
-# print("Computing BM25 Ranking with RE-RANKING using a BERT MODEL.")
-# model_type = "BM25"
-# model_name = None
-# neural_results = neural_rank_documents(model_type, model_name, documents, inverted_index, doc_lengths, queries, "BERT")
-# neural_save_results(neural_results, "../Results_Scores/BERT/Results.txt")
-# end_time = time.time() # end the timer
-# print(f"\nTime taken to complete STEP 4.1 - BERT MODEL RE-RANKING: {end_time - start_time:.2f} seconds")
-# print("")
-# print("---------------------------------------------------------------------------------------")
+# STEP 4.1 - Neural Ranking (BERT RERANK)
+start_time = time.time() # start the timer
+print("---------------------------------------------------------------------------------------")
+print("")
+print("Computing BM25 Ranking with RE-RANKING using a BERT MODEL.")
+model_type = "BM25"
+model_name = None
+neural_results = neural_rank_documents(model_type, model_name, documents, inverted_index, doc_lengths, queries, "BERT")
+neural_save_results(neural_results, "../Results_Scores/BERT/Results.txt")
+end_time = time.time() # end the timer
+print(f"\nTime taken to complete STEP 4.1 - BERT MODEL RE-RANKING: {end_time - start_time:.2f} seconds")
+print("")
+print("---------------------------------------------------------------------------------------")
 
-# # STEP 4.2 - Neural Ranking (ELECTRA RERANK)
-# start_time = time.time() # start the timer
-# print("---------------------------------------------------------------------------------------")
-# print("")
-# print("Computing BM25 Ranking with RE-RANKING using an ELECTRA MODEL.")
-# model_type = "BM25"
-# model_name = None
-# neural_results = neural_rank_documents(model_type, model_name, documents, inverted_index, doc_lengths, queries, "ELECTRA")
-# neural_save_results(neural_results, "../Results_Scores/ELECTRA/Results.txt")
-# end_time = time.time() # end the timer
-# print(f"\nTime taken to complete STEP 4.2 - ELECTRA MODEL RE-RANKING: {end_time - start_time:.2f} seconds")
-# print("")
-# print("---------------------------------------------------------------------------------------")
+# STEP 4.2 - Neural Ranking (ELECTRA RERANK)
+start_time = time.time() # start the timer
+print("---------------------------------------------------------------------------------------")
+print("")
+print("Computing BM25 Ranking with RE-RANKING using an ELECTRA MODEL.")
+model_type = "BM25"
+model_name = None
+neural_results = neural_rank_documents(model_type, model_name, documents, inverted_index, doc_lengths, queries, "ELECTRA")
+neural_save_results(neural_results, "../Results_Scores/ELECTRA/Results.txt")
+end_time = time.time() # end the timer
+print(f"\nTime taken to complete STEP 4.2 - ELECTRA MODEL RE-RANKING: {end_time - start_time:.2f} seconds")
+print("")
+print("---------------------------------------------------------------------------------------")
 
-# # STEP 4.3 - Neural Ranking (MINI LM RERANK)
-# start_time = time.time() # start the timer
-# print("---------------------------------------------------------------------------------------")
-# print("")
-# print("Computing BM25 Ranking with RE-RANKING using a MINI LM MODEL.")
-# model_type = "BM25"
-# model_name = None
-# neural_results = neural_rank_documents(model_type, model_name, documents, inverted_index, doc_lengths, queries, "MINI_LM")
-# neural_save_results(neural_results, "../Results_Scores/MINI_LM/Results.txt")
-# end_time = time.time() # end the timer
-# print(f"\nTime taken to complete STEP 4.3 - MINI_LM MODEL RE-RANKING: {end_time - start_time:.2f} seconds")
-# print("")
-# print("---------------------------------------------------------------------------------------")
+# STEP 4.3 - Neural Ranking (MINI LM RERANK)
+start_time = time.time() # start the timer
+print("---------------------------------------------------------------------------------------")
+print("")
+print("Computing BM25 Ranking with RE-RANKING using a MINI LM MODEL.")
+model_type = "BM25"
+model_name = None
+neural_results = neural_rank_documents(model_type, model_name, documents, inverted_index, doc_lengths, queries, "MINI_LM")
+neural_save_results(neural_results, "../Results_Scores/MINI_LM/Results.txt")
+end_time = time.time() # end the timer
+print(f"\nTime taken to complete STEP 4.3 - MINI_LM MODEL RE-RANKING: {end_time - start_time:.2f} seconds")
+print("")
+print("---------------------------------------------------------------------------------------")
 
 # STEP 5 - Computing MAP Scores Through PYTREC_EVAL
 print("---------------------------------------------------------------------------------------")
@@ -238,5 +239,89 @@ print("The average MAP Score for the BERT MODEL is: ", total_map_bert)
 print("The average MAP Score for the ELECTRA MODEL is: ", total_map_electra)
 print("The average MAP Score for the MINI LM MODEL is: ", total_map_minilm)
 print("STEP 5 COMPLETE")
+print("")
+print("---------------------------------------------------------------------------------------")
+
+# STEP 6 - P@10
+start_time = time.time()  # start the timer
+def rename_last_column(line, new_name="P@10"):
+    line = line.strip()
+    if not line:
+        return ""
+    parts = line.split()
+    parts[-1] = new_name
+    return " ".join(parts) + "\n"
+
+def compute_P10(input_file, output_file, skip_lines=80735):
+    with open(input_file, 'r') as f:
+        # Skip the first skip_lines lines
+        for _ in range(skip_lines):
+            next(f)
+        
+        results = []           # To store selected lines
+        first_query_id = None  # Will hold the query id of the first query block
+        first_count = 0        # Counter for first query lines
+        second_query_id = None # Will hold the query id of the second query block
+        second_count = 0       # Counter for second query lines
+
+        for line in f:
+            # Assuming the first token in each line is the query id.
+            parts = line.strip().split()
+            if not parts:
+                continue  # skip empty lines
+            query_id = parts[0]
+
+            # Process first query block
+            if first_query_id is None:
+                first_query_id = query_id
+
+            if query_id == first_query_id:
+                if first_count < 10:
+                    # Modify the line with the new column name and add to results
+                    results.append(rename_last_column(line))
+                    first_count += 1
+                continue  # Continue to next line after processing first query
+            
+            # Process second query block
+            if second_query_id is None:
+                second_query_id = query_id  # Set second query id when encountered
+                
+            if query_id == second_query_id:
+                if second_count < 10:
+                    results.append(rename_last_column(line))
+                    second_count += 1
+                    # Once we have 10 lines for the second query, we can finish.
+                    if second_count == 10:
+                        break
+            else:
+                # If a third query appears, we don't need it
+                break
+
+    # Write the selected results to the output file
+    with open(output_file, 'w') as out:
+        out.writelines(results)
+    print(f"Processed {input_file} and wrote results to {output_file}") 
+
+print("---------------------------------------------------------------------------------------")
+print("")
+print("Computing P@10 for the INITIAL BM25 MODEL.")
+output_dir = "../Results_Scores/P@10"  # define directories and output folder
+os.makedirs(output_dir, exist_ok=True)
+bm25_source = "../Results_Scores/BM25/Top10AnswersFirst2Queries.txt"
+bm25_dest = os.path.join(output_dir, "BM25_P@10.txt")
+with open(bm25_source, 'r') as f_in, open(bm25_dest, 'w') as f_out:
+    for line in f_in:
+        f_out.write(rename_last_column(line))
+print("Computing P@10 for the BERT MODEL.")
+print("Computing P@10 for the ELECTRA MODEL.")
+print("Computing P@10 for the MINI LM MODEL.")
+models = ["BERT", "ELECTRA", "MINI_LM"]
+print("Processed ../Results_Scores/BM25/Top10AnswersFirst2Queries.txt and wrote results to ../Results_Scores/P@10/BM25_P@10.txt")
+for model in models:
+    input_path = f"../Results_Scores/{model}/Results.txt"
+    output_path = os.path.join(output_dir, f"{model}_P@10.txt")
+    compute_P10(input_path, output_path)
+end_time = time.time()  # end the timer
+print(f"Time taken to complete STEP 6 - P@10: {end_time - start_time:.2f} seconds")
 print("")
 print("---------------------------------------------------------------------------------------")

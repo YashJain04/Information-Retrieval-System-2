@@ -82,7 +82,7 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
     print("\nRanking top 10 documents for the first 2 queries and creating associated file")
     writeResultsTop10First2("../Results_Scores/BM25/Top10AnswersFirst2Queries.txt", queries, model, "top_10_first_2_run")
 
-    print("Ranking all documents for all queries and creating associated file")
+    print("\nRanking all documents for all queries and creating associated file")
     writeResultsAll("../Results_Scores/BM25/AllScoresAllQueries.txt", queries, model, "all_scores_run")
 
     print("\nRanking top 100 documents for all queries and creating associated file. This is the file that will be used for final evaluation.")

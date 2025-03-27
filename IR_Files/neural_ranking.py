@@ -65,6 +65,7 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
     
     # Retrieve BM25 results (the same regardless of re-ranking type)
     print("Ranking documents and showing progress bars. If for some reason progress bars get stuck, note that it is just a visual glitch. Everything is indeed loaded correctly.")
+    
     print("Ranking top documents for all queries and creating associated file")
     writeResults("../Results_Scores/BM25/TopScoresAllQueries.txt", queries, model, "top_scores_run")
 

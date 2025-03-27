@@ -91,7 +91,7 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
     # Refine results with re-ranking using a dense model from sentence-transformers
     if reranking == "MINI_LM":
         # Load the dense model
-        print("We are in the MINI LM Branch. We are computing now.")
+        print("\nWe are in the MINI LM Branch. We are computing now.")
         mini_lm_model = create_model("mini-lm", "sentence-transformers/all-MiniLM-L6-v2", None, None, None)
         
         # Define the weights (tweak these if needed for best MAP)

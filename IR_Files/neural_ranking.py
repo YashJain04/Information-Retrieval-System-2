@@ -91,6 +91,7 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
     # Refine results with re-ranking using a dense model from sentence-transformers
     if reranking == "MINI_LM":
         # Load the dense model
+        print("We are in the MINI LM Branch. We are computing now.")
         mini_lm_model = create_model("mini-lm", "sentence-transformers/all-MiniLM-L6-v2", None, None, None)
         
         # Define the weights (tweak these if needed for best MAP)
@@ -99,6 +100,7 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
         
         dense_scores = {}
         # Iterate over each query's BM25 results (which is a dictionary: {doc_id: score})
+        print("We are in the iterating over the results retrieved from the initial IR system.")
         for query_id, candidate_dict in bm25_results.items():
             query_text = query_dict[query_id]
             query_embedding = mini_lm_model.encode(query_text, convert_to_tensor=True)
@@ -117,6 +119,7 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
             dense_scores[query_id] = {doc_id: score for doc_id, score in zip(candidate_doc_ids, cos_scores)}
         
         # Combine BM25 and MINI_LM dense scores using weighted sum.
+        print("We are using weighted sums now.")
         combined_results = {}
         for query_id, candidate_dict in bm25_results.items():
             # candidate_dict is already a dictionary mapping doc_id -> BM25 score.
@@ -125,6 +128,7 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
             # Sort the combined scores in descending order.
             combined_results[query_id] = sorted(combined.items(), key=lambda x: x[1], reverse=True)
         
+        print("Results are being returned.")
         results = combined_results
     
     elif reranking == "BERT":

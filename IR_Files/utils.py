@@ -38,28 +38,40 @@ def writeResults(results_file, queries, bm25, run_name):
 
 def writeResultsTop10First2(results_file, queries, bm25, run_name):
     beir_results = {}
-    count = 1
+    processed = 0  # Number of queries processed
+    started = False  # Flag indicating that we encountered query with ID 1
 
     with open(results_file, 'w') as output_file:
-        for query in queries:
+        for idx, query in enumerate(queries):
             query_id = query['num']
-            query_terms = query['title']
-            progress_bar(count, len(queries))
-            ranked_docs = bm25.rank_documents(query_terms)
-            normalized_ranked_docs = normalize_scores(ranked_docs)
-            count += 1
+            # Wait until we find the query with ID 1.
+            if not started:
+                # the query ID with 1 is where the test queries start
+                if query_id == "1" or query_id == 1:
+                    started = True
+                else:
+                    continue  # Skip any queries until ID 1 is reached.
 
-            # keep only top 10 for the first two queries
-            if count < 4:
+            # Process the query if we have started and haven't processed two queries yet.
+            if started and processed < 2:
+                query_terms = query['title']
+                progress_bar(idx + 1, len(queries))
+                ranked_docs = bm25.rank_documents(query_terms)
+                normalized_ranked_docs = normalize_scores(ranked_docs)
+                # Keep only the top 10 results.
                 normalized_ranked_docs = normalized_ranked_docs[:10]
+                processed += 1
 
                 if 'json' in results_file:
                     beir_results[query_id] = [(doc_id, score) for doc_id, score in normalized_ranked_docs]
-                
                 else:
                     for rank, (doc_id, score) in enumerate(normalized_ranked_docs, start=1):
                         result_line = f"{query_id} Q0 {doc_id} {rank} {score} {run_name}\n"
                         output_file.write(result_line)
+
+                # Once we've processed two queries, stop processing further.
+                if processed == 2:
+                    break
 
         if 'json' in results_file:
             json.dump(beir_results, output_file, indent=4)

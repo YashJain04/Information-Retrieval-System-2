@@ -15,12 +15,13 @@
 - Researched different models for MINI_LM (SentenceTransformers)
 - Documentation of code and program
 - Created TOP 10 documents FIRST 2 queries for all models (STEP 7)
-- Aided in explaination of model performance
+- Implemented, ran, and evaluated the TITLE vs TEXT/TITLE for all models
 
 2. Tolu Emoruwa's Work... 📗
-- Implemented the original BERT model
+- Implemented the original BERT model and created base framework for other models
 - Implemented the final BERT model
 - Implemented parts of Neural Ranking (neural_ranking.py)
+- Ran final program to ensure everything works and is submission ready
 - Researched different models for BERT (SentenceTransformers vs CrossEncoders)
 - Documentation of code and program
 - Researched RERANKING process use case of CrossEncoders
@@ -34,8 +35,7 @@
 - Implemented parts of Neural Ranking (neural_ranking.py)
 - Documentation of code and program
 - Researched RERANKING process use case of CrossEncoders
-- Aided in explaination of model performance
-- Implemented, ran, and evaluated the TITLE vs TEXT/TITLE for all models
+- Implemented framework for TITLE vs TITLE/TEXT 
 
 ## Running Instructions: 📓
 Ensure the following is installed:
@@ -120,22 +120,19 @@ Our models have varying P@10 scores. Please refer to the stats below:
 
 Scores can be found in there associated files.
 
-Please see the image below to refer to an example run. This is for the TITLE + TEXT.
-![Example Run](Example.png)
-
 ## Comparing Results (Title VS Title + Text) 🆚
 TITLE ONLY - MAP & P@10
-- BM25 MAP = FILL
-- BM25 P@10 = FILL
+- BM25 MAP = 0.3716
+- BM25 P@10 = 0.0574
 
-- BERT MAP = FILL
-- BERT P@10 = FILL
+- BERT MAP = 0.0226
+- BERT P@10 = 0.0031
 
-- ELECTRA MAP = FILL
-- ELECTRA P@10 = FILL
+- ELECTRA MAP = 0.3891
+- ELECTRA P@10 = 0.0582
 
-- MINI_LM MAP = FILL
-- MINI_LM P@10 = FILL
+- MINI_LM MAP = 0.3959
+- MINI_LM P@10 = 0.0629
 
 TITLE + TEXT - MAP & P@10
 - BM25 MAP = 0.595
@@ -151,6 +148,16 @@ TITLE + TEXT - MAP & P@10
 - MINI_LM P@10 = 0.088
 
 The code needed to change the program to preprocess only the head text without the body is found in `main.py`. Searching the document for "head_only" will show three lines that have been commented out. If you un-comment them and comment out the original functions, it'll run preprocessing with only the head text.
+
+NOTE: All TITLE only files have the same format as their counterparts with TITLE + TEXT, and can be found/seen with the "_head_only" text added at the end.
+
+Please see the image below to refer to an example run. This is for the TITLE ONLY.
+![Example Run](Example_TitleOnly.png)
+
+Please see the image below to refer to an example run. This is for the TITLE + TEXT.
+![Example Run](Example_Title&Text.png)
+
+After analyzing, these results it's clear that TITLE + TEXT generally retrieves higher scores in terms of MAP + PRECISION. Using the full set of data with text, allows better retrieval and context gathering for the model, as they have more information to work with. If you see the `Sample100Vocabulary_head_only.txt` you can see that there is limited information to be gathered only from the TITLE. This file shows a sample of 100 vocabulary with head only.
 
 ## Discussion Of Results (How Big Was The Vocabulary, Sample 100 Vocabulary and Top 10 Answers First 2 Queries) 📚
 The vocabulary (documents after being preprocessed) was 5183 in length representing the fact that there are 5183 documents, each with their own HEAD (title of the text) and TEXT (body of the text) keys.

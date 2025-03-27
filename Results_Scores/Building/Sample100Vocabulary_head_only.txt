@@ -1,0 +1,1459 @@
+[
+    {
+        "DOCNO": "4983",
+        "HEAD": [
+            "microstructur",
+            "develop",
+            "human",
+            "newborn",
+            "cerebr",
+            "white",
+            "matter",
+            "assess",
+            "vivo",
+            "diffus",
+            "tensor",
+            "magnet",
+            "reson",
+            "imag"
+        ]
+    },
+    {
+        "DOCNO": "5836",
+        "HEAD": [
+            "induct",
+            "myelodysplasia",
+            "myeloidderiv",
+            "suppressor",
+            "cell"
+        ]
+    },
+    {
+        "DOCNO": "7912",
+        "HEAD": [
+            "bc",
+            "rna",
+            "transcript",
+            "master",
+            "gene",
+            "id",
+            "element",
+            "amplif",
+            "abl",
+            "prime",
+            "revers",
+            "transcript"
+        ]
+    },
+    {
+        "DOCNO": "18670",
+        "HEAD": [
+            "dna",
+            "methylom",
+            "human",
+            "peripher",
+            "blood",
+            "mononuclear",
+            "cell"
+        ]
+    },
+    {
+        "DOCNO": "19238",
+        "HEAD": [
+            "human",
+            "myelin",
+            "basic",
+            "protein",
+            "gene",
+            "kilobas",
+            "transcript",
+            "unit",
+            "express",
+            "immun",
+            "central",
+            "nervou",
+            "system"
+        ]
+    },
+    {
+        "DOCNO": "33370",
+        "HEAD": [
+            "target",
+            "decreas",
+            "glioma",
+            "stem",
+            "cell",
+            "surviv",
+            "tumor",
+            "growth"
+        ]
+    },
+    {
+        "DOCNO": "36474",
+        "HEAD": [
+            "effici",
+            "target",
+            "express",
+            "silent",
+            "gene",
+            "human",
+            "esc",
+            "ipsc",
+            "zincfing",
+            "nucleas"
+        ]
+    },
+    {
+        "DOCNO": "54440",
+        "HEAD": [
+            "empir",
+            "bayesian",
+            "model",
+            "analys",
+            "molecular",
+            "serotyp",
+            "microarray"
+        ]
+    },
+    {
+        "DOCNO": "70115",
+        "HEAD": [
+            "bayesian",
+            "measur",
+            "model",
+            "complex",
+            "fit"
+        ]
+    },
+    {
+        "DOCNO": "70490",
+        "HEAD": [
+            "simplifi",
+            "likelihood",
+            "ratio"
+        ]
+    },
+    {
+        "DOCNO": "72159",
+        "HEAD": [
+            "induct",
+            "earli",
+            "ifninduc",
+            "gene",
+            "absenc",
+            "type"
+        ]
+    },
+    {
+        "DOCNO": "79447",
+        "HEAD": [
+            "arteriolar",
+            "function",
+            "viscer",
+            "adipos",
+            "tissu",
+            "impair",
+            "human",
+            "obes"
+        ]
+    },
+    {
+        "DOCNO": "87758",
+        "HEAD": [
+            "common",
+            "carotid",
+            "intima",
+            "media",
+            "thick",
+            "anklebrachi",
+            "pressur",
+            "index",
+            "correl",
+            "local",
+            "global",
+            "atheroma",
+            "burden",
+            "cross",
+            "section",
+            "studi",
+            "bodi",
+            "magnet",
+            "reson",
+            "angiographi"
+        ]
+    },
+    {
+        "DOCNO": "92308",
+        "HEAD": [
+            "loss",
+            "immun",
+            "escap",
+            "mutat",
+            "persist",
+            "hcv",
+            "infect",
+            "pregnanc",
+            "enhanc",
+            "replic",
+            "vertic",
+            "transmit",
+            "virus"
+        ]
+    },
+    {
+        "DOCNO": "92499",
+        "HEAD": [
+            "journey",
+            "develop",
+            "hematopoiet",
+            "stem",
+            "cell"
+        ]
+    },
+    {
+        "DOCNO": "97884",
+        "HEAD": [
+            "sacroiliac",
+            "joint",
+            "spondyloarthropathi"
+        ]
+    },
+    {
+        "DOCNO": "102662",
+        "HEAD": [
+            "rapid",
+            "method",
+            "extract",
+            "cotton",
+            "gossypium",
+            "spp",
+            "genom",
+            "dna",
+            "suitabl",
+            "rflp",
+            "pcr",
+            "analysi"
+        ]
+    },
+    {
+        "DOCNO": "103007",
+        "HEAD": [
+            "cross",
+            "section",
+            "statur",
+            "weight",
+            "refer",
+            "curv",
+            "uk"
+        ]
+    },
+    {
+        "DOCNO": "104130",
+        "HEAD": [
+            "sutur",
+            "nich",
+            "mesenchym",
+            "stem",
+            "cell",
+            "craniofaci",
+            "bone"
+        ]
+    },
+    {
+        "DOCNO": "106301",
+        "HEAD": [
+            "cardiac",
+            "neural",
+            "crest",
+            "cell",
+            "contribut",
+            "dormant",
+            "multipot",
+            "stem",
+            "cell",
+            "mammalian",
+            "heart"
+        ]
+    },
+    {
+        "DOCNO": "116792",
+        "HEAD": [
+            "mammalian",
+            "target",
+            "rapamycin",
+            "signal",
+            "pathway",
+            "mediat",
+            "epileptogenesi",
+            "model",
+            "tempor",
+            "lobe",
+            "epilepsi"
+        ]
+    },
+    {
+        "DOCNO": "118568",
+        "HEAD": [
+            "acut",
+            "administr",
+            "recombin",
+            "angiopoietin",
+            "amelior",
+            "multipleorgan",
+            "dysfunct",
+            "syndrom",
+            "improv",
+            "surviv",
+            "murin",
+            "sepsi"
+        ]
+    },
+    {
+        "DOCNO": "120626",
+        "HEAD": [
+            "mechan",
+            "link",
+            "obes",
+            "insulin",
+            "resist",
+            "type",
+            "diabet"
+        ]
+    },
+    {
+        "DOCNO": "123859",
+        "HEAD": [
+            "track",
+            "fate",
+            "glomerular",
+            "epitheli",
+            "cell",
+            "vivo",
+            "serial",
+            "multiphoton",
+            "imag",
+            "novel",
+            "mous",
+            "model",
+            "fluoresc",
+            "lineag",
+            "tag"
+        ]
+    },
+    {
+        "DOCNO": "140874",
+        "HEAD": [
+            "ctcf",
+            "bind",
+            "imprint",
+            "control",
+            "region",
+            "mediat",
+            "matern",
+            "inherit",
+            "higherord",
+            "chromatin",
+            "conform",
+            "restrict",
+            "enhanc",
+            "access",
+            "igf"
+        ]
+    },
+    {
+        "DOCNO": "143251",
+        "HEAD": [
+            "novo",
+            "assembl",
+            "pml",
+            "nuclear",
+            "subcompart",
+            "occur",
+            "multipl",
+            "pathway",
+            "induc",
+            "telomer",
+            "elong"
+        ]
+    },
+    {
+        "DOCNO": "152245",
+        "HEAD": [
+            "effect",
+            "opal",
+            "termin",
+            "codon",
+            "preced",
+            "nsp",
+            "gene",
+            "sequenc",
+            "onyongnyong",
+            "viru",
+            "genom",
+            "anophel",
+            "gambia",
+            "infect"
+        ]
+    },
+    {
+        "DOCNO": "153744",
+        "HEAD": [
+            "downregul",
+            "host",
+            "microrna",
+            "herpesviru",
+            "saimiri",
+            "noncod",
+            "rna"
+        ]
+    },
+    {
+        "DOCNO": "159469",
+        "HEAD": [
+            "htrf",
+            "technolog",
+            "tailor",
+            "drug",
+            "discoveri",
+            "review",
+            "theoret",
+            "aspect",
+            "applic"
+        ]
+    },
+    {
+        "DOCNO": "164189",
+        "HEAD": [
+            "chk",
+            "inhibit",
+            "replic",
+            "factori",
+            "activ",
+            "allow",
+            "dormant",
+            "origin",
+            "fire",
+            "exist",
+            "factori"
+        ]
+    },
+    {
+        "DOCNO": "164985",
+        "HEAD": [
+            "protooncogen",
+            "regul",
+            "il",
+            "express",
+            "macrophag",
+            "promot",
+            "gener",
+            "md",
+            "macrophag"
+        ]
+    },
+    {
+        "DOCNO": "169264",
+        "HEAD": [
+            "analysi",
+            "sio",
+            "nanoparticl",
+            "bind",
+            "protein",
+            "rat",
+            "blood",
+            "brain",
+            "homogen"
+        ]
+    },
+    {
+        "DOCNO": "175735",
+        "HEAD": [
+            "infer",
+            "nucleosom",
+            "posit",
+            "histon",
+            "mark",
+            "annot",
+            "chip",
+            "data"
+        ]
+    },
+    {
+        "DOCNO": "188911",
+        "HEAD": [
+            "gener",
+            "number",
+            "dendrit",
+            "cell",
+            "mous",
+            "bone",
+            "marrow",
+            "cultur",
+            "supplement",
+            "granulocytemacrophag",
+            "colonystimul",
+            "factor"
+        ]
+    },
+    {
+        "DOCNO": "195352",
+        "HEAD": [
+            "insulin",
+            "action",
+            "resist",
+            "obes",
+            "type",
+            "diabet"
+        ]
+    },
+    {
+        "DOCNO": "202259",
+        "HEAD": [
+            "effect",
+            "blood",
+            "pressur",
+            "cardiovascular",
+            "event",
+            "mortal",
+            "patient",
+            "dialysi",
+            "systemat",
+            "review",
+            "metaanalysi",
+            "randomis",
+            "control",
+            "trial"
+        ]
+    },
+    {
+        "DOCNO": "207972",
+        "HEAD": [
+            "interact",
+            "adenoviru",
+            "kilodalton",
+            "protein",
+            "novel",
+            "tumor",
+            "necrosi",
+            "factor",
+            "alphainduc",
+            "cellular",
+            "protein",
+            "contain",
+            "leucin",
+            "zipper",
+            "domain"
+        ]
+    },
+    {
+        "DOCNO": "213017",
+        "HEAD": [
+            "pml",
+            "induc",
+            "compact",
+            "trf",
+            "deplet",
+            "dna",
+            "damag",
+            "signal",
+            "telomer",
+            "promot",
+            "altern",
+            "lengthen"
+        ]
+    },
+    {
+        "DOCNO": "219475",
+        "HEAD": [
+            "grcdb",
+            "myeloid",
+            "cell",
+            "tip",
+            "balanc",
+            "immun",
+            "protect",
+            "tumor",
+            "promot",
+            "premetastat",
+            "lung"
+        ]
+    },
+    {
+        "DOCNO": "226488",
+        "HEAD": [
+            "activinnod",
+            "signal",
+            "stem",
+            "cell"
+        ]
+    },
+    {
+        "DOCNO": "236204",
+        "HEAD": [
+            "distinct",
+            "rnadepend",
+            "rna",
+            "polymeras",
+            "requir",
+            "rnai",
+            "trigger",
+            "doublestrand",
+            "rna",
+            "versu",
+            "truncat",
+            "transgen",
+            "paramecium",
+            "tetraurelia"
+        ]
+    },
+    {
+        "DOCNO": "238409",
+        "HEAD": [
+            "mechan",
+            "renal",
+            "cell",
+            "apoptosi",
+            "induc",
+            "cyclosporin",
+            "systemat",
+            "review",
+            "vitro",
+            "studi"
+        ]
+    },
+    {
+        "DOCNO": "243694",
+        "HEAD": [
+            "blood",
+            "stem",
+            "cell",
+            "emerg",
+            "aortic",
+            "endothelium",
+            "novel",
+            "type",
+            "cell",
+            "transit"
+        ]
+    },
+    {
+        "DOCNO": "253672",
+        "HEAD": [
+            "probabl",
+            "person",
+            "person",
+            "transmiss",
+            "novel",
+            "avian",
+            "influenza",
+            "hn",
+            "viru",
+            "eastern",
+            "china",
+            "epidemiolog",
+            "investig"
+        ]
+    },
+    {
+        "DOCNO": "263364",
+        "HEAD": [
+            "genet",
+            "variat",
+            "interleukinb",
+            "gene",
+            "associ",
+            "spontan",
+            "clearanc",
+            "progress",
+            "hepat",
+            "viru",
+            "moroccan",
+            "patient"
+        ]
+    },
+    {
+        "DOCNO": "266641",
+        "HEAD": [
+            "cd",
+            "express",
+            "invers",
+            "correl",
+            "foxp",
+            "suppress",
+            "function",
+            "human",
+            "cd",
+            "reg",
+            "cell"
+        ]
+    },
+    {
+        "DOCNO": "275294",
+        "HEAD": [
+            "environment",
+            "factor",
+            "influenc",
+            "cutan",
+            "product",
+            "vitamin"
+        ]
+    },
+    {
+        "DOCNO": "279052",
+        "HEAD": [
+            "genom",
+            "imprint",
+            "develop",
+            "growth",
+            "behavior",
+            "stem",
+            "cell"
+        ]
+    },
+    {
+        "DOCNO": "285794",
+        "HEAD": [
+            "quantit",
+            "detect",
+            "hepat",
+            "viru",
+            "rna",
+            "light",
+            "cycler",
+            "pcr",
+            "comparison",
+            "pcr",
+            "assay"
+        ]
+    },
+    {
+        "DOCNO": "293661",
+        "HEAD": [
+            "target",
+            "arginin",
+            "metabol",
+            "pathway",
+            "treat",
+            "argininedepend",
+            "cancer"
+        ]
+    },
+    {
+        "DOCNO": "301838",
+        "HEAD": [
+            "rank",
+            "signal",
+            "link",
+            "develop",
+            "invari",
+            "cell",
+            "progenitor",
+            "air",
+            "medullari",
+            "epithelium"
+        ]
+    },
+    {
+        "DOCNO": "301866",
+        "HEAD": [
+            "longterm",
+            "immun",
+            "defici",
+            "allogen",
+            "stem",
+            "cell",
+            "transplant",
+            "bcell",
+            "defici",
+            "associ",
+            "late",
+            "infect"
+        ]
+    },
+    {
+        "DOCNO": "306006",
+        "HEAD": [
+            "stimulatori",
+            "potenc",
+            "cell",
+            "antigen",
+            "influenc",
+            "format",
+            "immunolog",
+            "synaps"
+        ]
+    },
+    {
+        "DOCNO": "306311",
+        "HEAD": [
+            "control",
+            "glutam",
+            "clearanc",
+            "synapt",
+            "efficaci",
+            "glial",
+            "coverag",
+            "neuron"
+        ]
+    },
+    {
+        "DOCNO": "308862",
+        "HEAD": [
+            "durat",
+            "androgen",
+            "suppress",
+            "treatment",
+            "prostat",
+            "cancer"
+        ]
+    },
+    {
+        "DOCNO": "313394",
+        "HEAD": [
+            "function",
+            "neuroimag",
+            "studi",
+            "sound",
+            "local",
+            "visual",
+            "cortex",
+            "activ",
+            "predict",
+            "perform",
+            "earlyblind",
+            "individu"
+        ]
+    },
+    {
+        "DOCNO": "313403",
+        "HEAD": [
+            "highinfiltr",
+            "tumorassoci",
+            "macrophag",
+            "predict",
+            "unfavor",
+            "clinic",
+            "outcom",
+            "nodeneg",
+            "breast",
+            "cancer"
+        ]
+    },
+    {
+        "DOCNO": "317204",
+        "HEAD": [
+            "murin",
+            "dishevel",
+            "function",
+            "redund",
+            "pathway",
+            "dishevel",
+            "normal",
+            "cardiac",
+            "outflow",
+            "tract",
+            "cochlea",
+            "neural",
+            "tube",
+            "develop"
+        ]
+    },
+    {
+        "DOCNO": "323030",
+        "HEAD": [
+            "dynam",
+            "adheren",
+            "junction",
+            "epitheli",
+            "establish",
+            "mainten",
+            "remodel"
+        ]
+    },
+    {
+        "DOCNO": "323335",
+        "HEAD": [
+            "longterm",
+            "outcom",
+            "patient",
+            "asystol",
+            "induc",
+            "headup",
+            "tilt",
+            "test"
+        ]
+    },
+    {
+        "DOCNO": "327319",
+        "HEAD": [
+            "zinc",
+            "ligand",
+            "discoveri"
+        ]
+    },
+    {
+        "DOCNO": "335029",
+        "HEAD": [
+            "condensinmedi",
+            "remodel",
+            "mitot",
+            "chromatin",
+            "landscap",
+            "fission",
+            "yeast"
+        ]
+    },
+    {
+        "DOCNO": "341324",
+        "HEAD": [
+            "efficaci",
+            "month",
+            "thriceweekli",
+            "regimen",
+            "treatment",
+            "sputum",
+            "smearposit",
+            "pulmonari",
+            "tuberculosi",
+            "clinic",
+            "trial",
+            "condit"
+        ]
+    },
+    {
+        "DOCNO": "343052",
+        "HEAD": [
+            "curcumin",
+            "attenu",
+            "inflammatori",
+            "respons",
+            "ilbetainduc",
+            "human",
+            "synovi",
+            "fibroblast",
+            "collageninduc",
+            "arthriti",
+            "mous",
+            "model"
+        ]
+    },
+    {
+        "DOCNO": "344240",
+        "HEAD": [
+            "loss",
+            "igfiea",
+            "igfieb",
+            "impair",
+            "myogen",
+            "differenti"
+        ]
+    },
+    {
+        "DOCNO": "350542",
+        "HEAD": [
+            "antimicrobi",
+            "peptid",
+            "pleurocidin",
+            "synerg",
+            "antibiot",
+            "hydroxyl",
+            "radic",
+            "format",
+            "membran",
+            "damag",
+            "exert",
+            "antibiofilm",
+            "activ"
+        ]
+    },
+    {
+        "DOCNO": "356218",
+        "HEAD": [
+            "outcom",
+            "pregnanc",
+            "women",
+            "moder",
+            "sever",
+            "renal",
+            "insuffici"
+        ]
+    },
+    {
+        "DOCNO": "364522",
+        "HEAD": [
+            "highmobl",
+            "group",
+            "box",
+            "protein",
+            "induc",
+            "osteogen",
+            "phenotyp",
+            "chang",
+            "aortic",
+            "valv",
+            "interstiti",
+            "cell"
+        ]
+    },
+    {
+        "DOCNO": "365896",
+        "HEAD": [
+            "ribosi",
+            "highresolut",
+            "quantit",
+            "approach",
+            "measur",
+            "vivo",
+            "kinet",
+            "premrna",
+            "splice",
+            "process",
+            "saccharomyc",
+            "cerevisia"
+        ]
+    },
+    {
+        "DOCNO": "368506",
+        "HEAD": [
+            "gener",
+            "mice",
+            "condit",
+            "allel",
+            "pntr",
+            "neurotrophin",
+            "receptor",
+            "gene"
+        ]
+    },
+    {
+        "DOCNO": "371289",
+        "HEAD": [
+            "triplestain",
+            "flow",
+            "cytometr",
+            "method",
+            "assess",
+            "plasma",
+            "acrosomemembran",
+            "integr",
+            "cryopreserv",
+            "bovin",
+            "sperm",
+            "thaw",
+            "presenc",
+            "eggyolk",
+            "particl"
+        ]
+    },
+    {
+        "DOCNO": "374902",
+        "HEAD": [
+            "univers",
+            "voluntari",
+            "hiv",
+            "test",
+            "immedi",
+            "antiretrovir",
+            "therapi",
+            "strategi",
+            "elimin",
+            "hiv",
+            "transmiss",
+            "mathemat",
+            "model"
+        ]
+    },
+    {
+        "DOCNO": "380526",
+        "HEAD": [
+            "common",
+            "variant",
+            "dgkk",
+            "associ",
+            "risk",
+            "hypospadia"
+        ]
+    },
+    {
+        "DOCNO": "381602",
+        "HEAD": [
+            "neutrophil",
+            "suppress",
+            "intralumin",
+            "nk",
+            "cellmedi",
+            "tumor",
+            "cell",
+            "clearanc",
+            "enhanc",
+            "extravas",
+            "dissemin",
+            "carcinoma",
+            "cell"
+        ]
+    },
+    {
+        "DOCNO": "393001",
+        "HEAD": [
+            "solubl",
+            "nucleotidas",
+            "human",
+            "placenta",
+            "properti",
+            "alloster",
+            "regul",
+            "imp",
+            "atp"
+        ]
+    },
+    {
+        "DOCNO": "406733",
+        "HEAD": [
+            "histon",
+            "incorpor",
+            "tran",
+            "reassembl",
+            "yeast",
+            "pho",
+            "promot"
+        ]
+    },
+    {
+        "DOCNO": "409280",
+        "HEAD": [
+            "nation",
+            "studi",
+            "physician",
+            "awar",
+            "adher",
+            "cardiovascular",
+            "diseas",
+            "prevent",
+            "guidelin"
+        ]
+    },
+    {
+        "DOCNO": "410286",
+        "HEAD": [
+            "technic",
+            "advanc",
+            "floral",
+            "dip",
+            "simplifi",
+            "method",
+            "agrobacteriummedi"
+        ]
+    },
+    {
+        "DOCNO": "418246",
+        "HEAD": [
+            "pathway",
+            "connect",
+            "signal",
+            "coordin",
+            "yeast",
+            "stressactiv",
+            "signal",
+            "network"
+        ]
+    },
+    {
+        "DOCNO": "427082",
+        "HEAD": [
+            "premigratori",
+            "migratori",
+            "neural",
+            "crest",
+            "cell",
+            "multipot",
+            "vivo"
+        ]
+    },
+    {
+        "DOCNO": "427865",
+        "HEAD": [
+            "implement",
+            "eshr",
+            "poor",
+            "respond",
+            "criteria",
+            "research",
+            "studi",
+            "methodolog",
+            "implic"
+        ]
+    },
+    {
+        "DOCNO": "432261",
+        "HEAD": [
+            "gener",
+            "geneedit",
+            "rat",
+            "deliveri",
+            "crisprca",
+            "protein",
+            "donor",
+            "dna",
+            "intact",
+            "zygot",
+            "electropor"
+        ]
+    },
+    {
+        "DOCNO": "435529",
+        "HEAD": [
+            "uridyl",
+            "mirna",
+            "hen",
+            "suppressor",
+            "arabidopsi"
+        ]
+    },
+    {
+        "DOCNO": "437924",
+        "HEAD": [
+            "preexposur",
+            "prophylaxi",
+            "prevent",
+            "hiv",
+            "infect",
+            "current",
+            "statu",
+            "futur",
+            "opportun",
+            "challeng"
+        ]
+    },
+    {
+        "DOCNO": "439670",
+        "HEAD": [
+            "prepregn",
+            "bmi",
+            "risk",
+            "gestat",
+            "diabet",
+            "systemat",
+            "review",
+            "literatur",
+            "metaanalysi"
+        ]
+    },
+    {
+        "DOCNO": "456304",
+        "HEAD": [
+            "multipl",
+            "risk",
+            "behaviour",
+            "increas",
+            "socioeconom",
+            "gap"
+        ]
+    },
+    {
+        "DOCNO": "457630",
+        "HEAD": [
+            "variat",
+            "trend",
+            "health",
+            "burden",
+            "visual",
+            "impair",
+            "cataract",
+            "global",
+            "analysi"
+        ]
+    },
+    {
+        "DOCNO": "461550",
+        "HEAD": [
+            "multiplex",
+            "genom",
+            "engin",
+            "crisprca",
+            "system"
+        ]
+    },
+    {
+        "DOCNO": "463309",
+        "HEAD": [
+            "transform",
+            "intact",
+            "yeast",
+            "cell",
+            "treat",
+            "alkali",
+            "cation"
+        ]
+    },
+    {
+        "DOCNO": "463533",
+        "HEAD": [
+            "healthrel",
+            "qualiti",
+            "life",
+            "measur",
+            "eqd",
+            "popul",
+            "specif",
+            "chronic",
+            "condit",
+            "populationbas",
+            "survey",
+            "shaanxi",
+            "provinc",
+            "china"
+        ]
+    },
+    {
+        "DOCNO": "464511",
+        "HEAD": [
+            "memori",
+            "modular",
+            "cellfat",
+            "decis"
+        ]
+    },
+    {
+        "DOCNO": "469066",
+        "HEAD": [
+            "lpd",
+            "deplet",
+            "reveal",
+            "srf",
+            "specifi",
+            "radial",
+            "versu",
+            "tangenti",
+            "migrat",
+            "pyramid",
+            "neuron"
+        ]
+    },
+    {
+        "DOCNO": "470625",
+        "HEAD": [
+            "identif",
+            "inkc",
+            "tumor",
+            "suppressor",
+            "gene",
+            "glioblastoma",
+            "multiform"
+        ]
+    },
+    {
+        "DOCNO": "471735",
+        "HEAD": [
+            "twostag",
+            "control",
+            "oxid",
+            "stress",
+            "regulon",
+            "escherichia",
+            "coli",
+            "soxr",
+            "protein",
+            "trigger",
+            "redoxinduc",
+            "express",
+            "sox",
+            "regulatori",
+            "gene"
+        ]
+    },
+    {
+        "DOCNO": "471921",
+        "HEAD": [
+            "air",
+            "pollut",
+            "cardiovascular",
+            "diseas",
+            "statement",
+            "healthcar",
+            "profession",
+            "expert",
+            "panel",
+            "popul",
+            "prevent",
+            "scienc",
+            "american",
+            "heart",
+            "associ"
+        ]
+    },
+    {
+        "DOCNO": "474325",
+        "HEAD": [
+            "noninvas",
+            "ventil",
+            "chronic",
+            "obstruct",
+            "pulmonari",
+            "diseas",
+            "patient",
+            "helmet",
+            "versu",
+            "facial",
+            "mask"
+        ]
+    },
+    {
+        "DOCNO": "485020",
+        "HEAD": [
+            "case",
+            "manag",
+            "client",
+            "access",
+            "health",
+            "social",
+            "servic",
+            "outpati",
+            "substanc",
+            "abus",
+            "treatment"
+        ]
+    },
+    {
+        "DOCNO": "493346",
+        "HEAD": [
+            "evid",
+            "iplsli",
+            "aurora",
+            "kinaseincenp",
+            "complex",
+            "promot",
+            "chromosom",
+            "biorient",
+            "alter",
+            "kinetochorespindl",
+            "pole",
+            "connect"
+        ]
+    },
+    {
+        "DOCNO": "496873",
+        "HEAD": [
+            "critic",
+            "review",
+            "cutan",
+            "vascul",
+            "updat",
+            "diagnost",
+            "criteria"
+        ]
+    },
+    {
+        "DOCNO": "502591",
+        "HEAD": [
+            "efdepend",
+            "histon",
+            "acetyl",
+            "recruit",
+            "tip",
+            "acetyltransferas",
+            "complex",
+            "chromatin",
+            "late"
+        ]
+    }
+]

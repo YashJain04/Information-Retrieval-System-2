@@ -35,3 +35,33 @@ class CustomRerank(Rerank):
             reranked = sorted(zip(doc_ids, rerank_scores), key=lambda x: x[1], reverse=True)
             results[query_id] = reranked
         return results
+    
+    def rerank_head_only(self, corpus, query_dict, bm25_results, top_k=100):
+        """
+        A head-only re-ranking version that uses only the title (HEAD) from the corpus.
+        """
+        results = {}
+        for query_id, doc_scores in bm25_results.items():
+            sentence_pairs = []
+            doc_ids = []
+            for doc_id, _ in doc_scores.items():
+                # Only use the title (HEAD) here
+                doc_text = corpus[doc_id]['title']
+                sentence_pairs.append([query_dict[query_id], doc_text])
+                doc_ids.append(doc_id)
+            predictions = self.cross_encoder.predict(sentence_pairs, batch_size=self.batch_size)
+            rerank_scores = []
+            for pred in predictions:
+                if isinstance(pred, np.ndarray):
+                    if pred.size == 1:
+                        score = pred.item()
+                    else:
+                        score = float(pred.flat[0])
+                elif hasattr(pred, "item"):
+                    score = pred.item()
+                else:
+                    score = float(pred)
+                rerank_scores.append(score)
+            reranked = sorted(zip(doc_ids, rerank_scores), key=lambda x: x[1], reverse=True)
+            results[query_id] = reranked
+        return results

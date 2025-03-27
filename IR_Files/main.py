@@ -75,46 +75,46 @@ print(f"Time taken to complete STEP 3 (GETTING DOC_LENGTHS): {end_time - start_t
 print("")
 print("---------------------------------------------------------------------------------------")
 
-# # STEP 4.0 - Initial Ranking (A1 IR SYSTEM - BM25)
-# start_time = time.time() # start the timer
-# print("---------------------------------------------------------------------------------------")
-# print("")
-# print("Computing BM25 Ranking. This is our Initial IR System from Assignment 1.")
-# model_type = "BM25"
-# model_name = None
-# neural_rank_documents(model_type, model_name, documents, inverted_index, doc_lengths, queries, None)
-# end_time = time.time() # end the timer
-# print(f"\nTime taken to complete STEP 4.0 - BM25 Model Ranking: {end_time - start_time:.2f} seconds")
-# print("")
-# print("---------------------------------------------------------------------------------------")
+# STEP 4.0 - Initial Ranking (A1 IR SYSTEM - BM25)
+start_time = time.time() # start the timer
+print("---------------------------------------------------------------------------------------")
+print("")
+print("Computing BM25 Ranking. This is our Initial IR System from Assignment 1.")
+model_type = "BM25"
+model_name = None
+neural_rank_documents(model_type, model_name, documents, inverted_index, doc_lengths, queries, None)
+end_time = time.time() # end the timer
+print(f"\nTime taken to complete STEP 4.0 - BM25 Model Ranking: {end_time - start_time:.2f} seconds")
+print("")
+print("---------------------------------------------------------------------------------------")
 
-# # STEP 4.1 - Neural Ranking (BERT RERANK)
-# start_time = time.time() # start the timer
-# print("---------------------------------------------------------------------------------------")
-# print("")
-# print("Computing BM25 Ranking with RE-RANKING using a BERT MODEL.")
-# model_type = "BM25"
-# model_name = None
-# neural_results = neural_rank_documents(model_type, model_name, documents, inverted_index, doc_lengths, queries, "BERT")
-# neural_save_results(neural_results, "../Results_Scores/BERT/Results.txt")
-# end_time = time.time() # end the timer
-# print(f"\nTime taken to complete STEP 4.1 - BERT MODEL RE-RANKING: {end_time - start_time:.2f} seconds")
-# print("")
-# print("---------------------------------------------------------------------------------------")
+# STEP 4.1 - Neural Ranking (BERT RERANK)
+start_time = time.time() # start the timer
+print("---------------------------------------------------------------------------------------")
+print("")
+print("Computing BM25 Ranking with RE-RANKING using a BERT MODEL.")
+model_type = "BM25"
+model_name = None
+neural_results = neural_rank_documents(model_type, model_name, documents, inverted_index, doc_lengths, queries, "BERT")
+neural_save_results(neural_results, "../Results_Scores/BERT/Results.txt")
+end_time = time.time() # end the timer
+print(f"\nTime taken to complete STEP 4.1 - BERT MODEL RE-RANKING: {end_time - start_time:.2f} seconds")
+print("")
+print("---------------------------------------------------------------------------------------")
 
-# # STEP 4.2 - Neural Ranking (ELECTRA RERANK)
-# start_time = time.time() # start the timer
-# print("---------------------------------------------------------------------------------------")
-# print("")
-# print("Computing BM25 Ranking with RE-RANKING using an ELECTRA MODEL.")
-# model_type = "BM25"
-# model_name = None
-# neural_results = neural_rank_documents(model_type, model_name, documents, inverted_index, doc_lengths, queries, "ELECTRA")
-# neural_save_results(neural_results, "../Results_Scores/ELECTRA/Results.txt")
-# end_time = time.time() # end the timer
-# print(f"\nTime taken to complete STEP 4.2 - ELECTRA MODEL RE-RANKING: {end_time - start_time:.2f} seconds")
-# print("")
-# print("---------------------------------------------------------------------------------------")
+# STEP 4.2 - Neural Ranking (ELECTRA RERANK)
+start_time = time.time() # start the timer
+print("---------------------------------------------------------------------------------------")
+print("")
+print("Computing BM25 Ranking with RE-RANKING using an ELECTRA MODEL.")
+model_type = "BM25"
+model_name = None
+neural_results = neural_rank_documents(model_type, model_name, documents, inverted_index, doc_lengths, queries, "ELECTRA")
+neural_save_results(neural_results, "../Results_Scores/ELECTRA/Results.txt")
+end_time = time.time() # end the timer
+print(f"\nTime taken to complete STEP 4.2 - ELECTRA MODEL RE-RANKING: {end_time - start_time:.2f} seconds")
+print("")
+print("---------------------------------------------------------------------------------------")
 
 # STEP 4.3 - Neural Ranking (MINI LM RERANK)
 start_time = time.time() # start the timer

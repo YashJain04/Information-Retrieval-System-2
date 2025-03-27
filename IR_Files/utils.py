@@ -134,7 +134,6 @@ def writeResultsTop100(results_file, queries, bm25, run_name):
                 result_line = f"{query_id} Q0 {doc_id} {rank} {score} {run_name}\n"
                 output_file.write(result_line)
 
-        # Optionally, if the results file is supposed to be JSON, dump the dict.
         if 'json' in results_file:
             json.dump(beir_results, output_file, indent=4)
 

@@ -131,7 +131,7 @@ print(f"\nTime taken to complete STEP 4.3 - MINI_LM MODEL RE-RANKING: {end_time 
 print("")
 print("---------------------------------------------------------------------------------------")
 
-# STEP 5 - Computing MAP and P@10 Scores Through PYTREC_EVAL
+# STEP 5 - Computing MAP Scores Through PYTREC_EVAL
 start_time = time.time() # start the timer
 print("---------------------------------------------------------------------------------------")
 print("")
@@ -246,7 +246,7 @@ print(f"\nTime taken to complete STEP 5 - MAP COMPUTATION: {end_time - start_tim
 print("")
 print("---------------------------------------------------------------------------------------")
 
-# STEP 6 - Computing P@10
+# STEP 6 - Computing P@10 Scores Through PYTREC_EVAL
 start_time = time.time() # start the timer
 print("---------------------------------------------------------------------------------------")
 print("")
@@ -278,7 +278,7 @@ print(f"\nTime taken to complete STEP 6 - P@10 COMPUTATION: {end_time - start_ti
 print("")
 print("---------------------------------------------------------------------------------------")
 
-# STEP 7 (EXTRA) - Top 10 Documents First 2 Queries
+# STEP 7 - Top 10 Documents First 2 Queries
 start_time = time.time()  # start the timer
 def rename_last_column(line, new_name="top_10_documents_first_2_test.tsv_queries_run"):
     line = line.strip()

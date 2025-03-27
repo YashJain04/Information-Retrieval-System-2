@@ -7,13 +7,35 @@
 
 ## Dividing Tasks Information: 📒
 1. Yash Jain's Work... 📕
--
+- Implemented the MINI_LM model
+- Computed P@10 Scores, final timings, and MAP scores
+- Organized directories
+- Implemented parts of Neural Ranking (neural_ranking.py)
+- Implemented CustomReranker (customizer.py)
+- Researched different models for MINI_LM (SentenceTransformers)
+- Documentation of code and program
+- Created TOP 10 documents FIRST 2 queries for all models (STEP 7)
+- Aided in explaination of model performance
 
 2. Tolu Emoruwa's Work... 📗
--
+- Implemented the original BERT model
+- Implemented the final BERT model
+- Implemented parts of Neural Ranking (neural_ranking.py)
+- Researched different models for BERT (SentenceTransformers vs CrossEncoders)
+- Documentation of code and program
+- Researched RERANKING process use case of CrossEncoders
+- Wrote explaination of final results (understanding as to why some models score higher than others)
 
 3. Shacha Parker's Work... 📙
--
+- Implemented the ELECTRA model
+- Researched different models for ELECTRA (CrossEncoders)
+- Ran final program to ensure everything works and is submission ready
+- Worked on implementing BERT with WEIGHTS
+- Implemented parts of Neural Ranking (neural_ranking.py)
+- Documentation of code and program
+- Researched RERANKING process use case of CrossEncoders
+- Aided in explaination of model performance
+- Implemented, ran, and evaluated the TITLE vs TEXT/TITLE for all models
 
 ## Running Instructions: 📓
 Ensure the following is installed:
@@ -33,9 +55,14 @@ The `main.py` file contains our main program which is used for running the code.
 - Completes Step 0 (basically the code inside `parser.py` file) and calculates the time to do so
 - Completes Step 1 (basically the code inside `preprocessor.py` file) and calculates the time to do so
 - Completes Step 2 (basically the code inside `indexing.py` file) and calculates the time to do so
-- Completes Step 3 (basically the code inside `ranking.py` file) and calculates the time to do so
-- Completes Step 4 (writing results to file)
+- Completes Step 3 (getting document lengths)
+- Completes Step 4.0 (computation of the BM25 model which is our initial model)
+- Completes Step 4.1 (computation of the BERT model)
+- Completes Step 4.2 (computation of the ELECTRA model)
+- Completes Step 4.3 (computation of the MINI LM model)
 - Completes Step 5 (computing MAP scores through PYTREC_EVAL)
+- Completes Step 6 (computing P@10 scores through PYTREC_EVAL)
+- Completes Step 7 (retrieving TOP 10 DOCUMENTS FIRST 2 QUERIES for all models)
 
 The `utils.py` file contains our utilities which is used for running the code. IT...
 - This is a helper file that is used within `main.py` it creates progress bars for visualization in the terminal
@@ -59,34 +86,78 @@ This step is for preprocessing documents and it is done by a few functions. In e
 - This step is for preprocessing queries and it is done by the same similar process in which documents were validated. In a quick short summary, we leverage a hashmap to extract the specific text for the query which is simply stored as the title key. Note: We do not include the query number! Otherwise, this will filter out our queries incorrectly, and cause wrong results, as numbers are filtered returning invalid key values inside the hashmap. From there we simply, preprocess the text within the query which is the same process as preprocessing the text for documents (***tokenizing it and usage of stemmers***). We then return after all the filtration as the queries are now cleaned and validated.
 
 This step's output is stored across 2 files and in here you can see the cleaned and validated files with stopWords removed and words that are stemmed as well as seperate entities (title and text) stored in (HEAD and text). The files are listed as below:
-- `../Results_Scores/preprocessed_documents.json` (in the .gitignore because too large and can't push to github)
-- `../Results_Scores/preprocessed_queries.json` (in the .gitignore because too large and can't push to github)
+- `Results_Scores/Building/preprocessed_documents.json` (in the .gitignore because too large and can't push to github)
+- `Results_Scores/Building/preprocessed_queries.json` (in the .gitignore because too large and can't push to github)
 
 ### 2. Step Two Implementation (Indexing) 🛠️
-In this step we start to build our inverted index from the cleaned and validated documents from STEP 1. We leverage a hashmap that efficiently maps each unique token to the documents in which it appears, along with the frequency of its occurrences. The `build_inverted_index` function constructs this index by iterating through the provided documents, ensuring quick lookup and retrieval of term-document associations. Additionally, the `calculate_document_lengths` function computes the length of each document, which is used when computing the BM25 score for ranking and retrieval. The process is done inside `indexing.py` and the output from this step can be seen in `../Results_Scores/inverted_index.json` (in the .gitignore because too large and can't push to github).
+In this step we start to build our inverted index from the cleaned and validated documents from STEP 1. We leverage a hashmap that efficiently maps each unique token to the documents in which it appears, along with the frequency of its occurrences. The `build_inverted_index` function constructs this index by iterating through the provided documents, ensuring quick lookup and retrieval of term-document associations. Additionally, the `calculate_document_lengths` function computes the length of each document, which is used when computing the BM25 score for ranking and retrieval. The process is done inside `indexing.py` and the output from this step can be seen in `Results_Scores/Building/inverted_index.json` (in the .gitignore because too large and can't push to github).
 
 ### 3. Step Three Implementation (Ranking & Retrieval) 🏆
 In this step, we use our inverted index from STEP 2 to complete the ranking, scoring, and retrieval process much more ***efficiently***. With the `inverted_index`, we compute the document length as said before, which will be needed for the ***BM25 ranking score algorithm***. We then start our ranking process, which utilizes the BM25 ranking score algorithm to determine the most relevant documents for a given query. The BM25 ranking function assigns scores to documents based on term frequency, inverse document frequency, and document length normalization. Using the `BM25` class, we compute the **Inverse Document Frequency (IDF)** for each query term, ensuring that less frequent terms contribute more to the ranking. The **Term Frequency (TF)** component is adjusted using the `k1` (k1 value is 1.5) and `b` (b value is 0.75) parameters to balance term importance while considering document length. Once we have computed the BM25 scores for all relevant documents, we sort them in descending order to present the most relevant results first. Additionally, we apply a **score normalization function**, ensuring that the ranking values are scaled between 0 and 1, making them easier to interpret.
 
-This step's output is stored in the `../Results_Scores/TopScoresAllQueries.txt` file and here you can see our final results. The associated code and functions for this step can be seen in the `ranking.py` file. This step also creates 2 more files `../Results_Scores/Top10AnswersFirst2Queries.txt` which is our top 10 scores for the first 2 queries and `../Results_Scores/AllScoresAllQueries.txt` which is our scores for all queries. Lastly, this step creates the final results file as well in the `../Results_Scores/Results.txt` which contains the top 100 document scores for the queries. This `../Results_Scores/Results.txt` is the file we use in our PYTREC_EVAL to retrieve the MAP Score and compare it against test.tsv. We skip the first 80735 lines to ensure we only get queries that are apparent in the test.tsv file, i.e. the test queries.
+This step's output is stored in the `Results_Scores/BM25/TopScoresAllQueries.txt` file and here you can see our final results. The associated code and functions for this step can be seen in the `ranking.py` file. This step also creates 2 more files `Results_Scores/BM25/Top10AnswersFirst2Queries.txt` which is our top 10 scores for the first 2 queries and `Results_Scores/BM25/AllScoresAllQueries.txt` which is our scores for all queries. Lastly, this step creates the final results file as well in the `Results_Scores/BM25/Results.txt` which contains the top 100 document scores for the queries. This `Results_Scores/BM25/Results.txt` is the file we use in our PYTREC_EVAL to retrieve the MAP Score and compare it against test.tsv. We skip the first 80735 lines to ensure we only get queries that are apparent in the test.tsv file, i.e. the test queries.
+
+The same is done for the BERT, ELECTRA, and MINI_LM model.
 
 ### 3.1 Justification of BM25 Algorithm Over Cosine Simularity ✏️
 We decided to leverage the BM25 Algorithm because it has a higher retrieval performance and also lead to faster processing times. When we implemented the COSINE SIM ranking algorithm, our code took around ~15-30 minutes to run. With the BM25 algorithm, our code was processed within seconds, thus we decided to finalize on the BM25 Algorithm and neglect the COSINE SIM algorithm.
 
 ## Mean Average Precision (MAP) Score: 📊
-Our final Mean Average Precison (MAP) Score is ~0.6 (exactly 0.59499573) of how similar and accurate our measures are. This checks the correct and incorrect results of our `../Results_Scores/Results.txt` file (output from our code) and usage of PYTREC_EVAL to check that vs test.tsv file. The MAP score for every single document/query can be seen in the `MAPScores.json` file.
+Our models have varying MAP scores. Please refer to the stats below:
+- BM25 : 0.595 `Results_Scores/MAP_P10/BM25_MAP_P10_SCORE.json`
+- BERT : 0.0564 `Results_Scores/MAP_P10/BERT_MAP_P10_SCORE.json`
+- ELECTRA : 0.4904 `Results_Scores/MAP_P10/ELECTRA_MAP_P10_SCORE.json`
+- MINI_LM : 0.6223 `Results_Scores/MAP_P10/MINI_LM_MAP_P10_SCORE.json`
+
+Scores can be found in there associated files.
+
+## P@10 Score: 📊
+Our models have varying P@10 scores. Please refer to the stats below:
+- BM25 : 0.0833 `Results_Scores/MAP_P10/BM25_MAP_P10_SCORE.json`
+- BERT : 0.0143 `Results_Scores/MAP_P10/BERT_MAP_P10_SCORE.json`
+- ELECTRA : 0.0723 `Results_Scores/MAP_P10/ELECTRA_MAP_P10_SCORE.json`
+- MINI_LM : 0.088 `Results_Scores/MAP_P10/MINI_LM_MAP_P10_SCORE.json`
+
+Scores can be found in there associated files.
+
+Please see the image below to refer to an example run. This is for the TITLE + TEXT.
+![Example Run](Example.png)
 
 ## Comparing Results (Title VS Title + Text) 🆚
-We found that the MAP score was lower when we eliminated the body text ("TEXT") during preprocessing and kept only the title text ("TITLE") for the program to process beyond Step 1. With only the title text in the processed document, the MAP score was 0.38750596. It's evident that the score was lowered by there being less text with which to match queries, causing the program to retrieve fewer relevant documents. Additionally, both the title and body text resulted in a better MAP score ~0.6 (exactly 0.59499573).
+TITLE ONLY - MAP & P@10
+- BM25 MAP = FILL
+- BM25 P@10 = FILL
+
+- BERT MAP = FILL
+- BERT P@10 = FILL
+
+- ELECTRA MAP = FILL
+- ELECTRA P@10 = FILL
+
+- MINI_LM MAP = FILL
+- MINI_LM P@10 = FILL
+
+TITLE + TEXT - MAP & P@10
+- BM25 MAP = 0.595
+- BM25 P@10 = 0.0833
+
+- BERT MAP = 0.0564
+- BERT P@10 = 0.0143
+
+- ELECTRA MAP = 0.4904
+- ELECTRA P@10 = 0.0723
+
+- MINI_LM MAP = 0.6223
+- MINI_LM P@10 = 0.088
 
 The code needed to change the program to preprocess only the head text without the body is found in `main.py`. Searching the document for "head_only" will show three lines that have been commented out. If you un-comment them and comment out the original functions, it'll run preprocessing with only the head text.
 
 ## Discussion Of Results (How Big Was The Vocabulary, Sample 100 Vocabulary and Top 10 Answers First 2 Queries) 📚
 The vocabulary (documents after being preprocessed) was 5183 in length representing the fact that there are 5183 documents, each with their own HEAD (title of the text) and TEXT (body of the text) keys.
 
-We included a sample of the first 100 documents, this can be seen in the file `Sample100Vocabulary.txt`, each document is represented by a specific document number (which then has HEAD for titles, and TEXT for body text).
+We included a sample of the first 100 documents, this can be seen in the file `Sample100Vocabulary.txt`, found in the `Building/` folder. Each document is represented by a specific document number (which then has HEAD for titles, and TEXT for body text). Analysis and discussion of these results can be seen in the next section:
 
-In addition, we included the first 10 answers for the first 2 queries in a file called `Top10AnswersFirst2Queries.txt`. Analysis and discussion of these results can be seen below:
+In addition, we included the first 10 answers for the first 2 queries for all models in files found in the `TOP_10_DOCS_FIRST_2_QUERIES` folder.
 
 ### First Query Top 10 Answers 1️⃣
 Analyzing the first query, we see that it is for query 0. The matching document that was returned with a score of 1, was actually DOCNO 26071782. This means that there were similar words from this document and matching query. Upon further digging we see that this query has words seen below:
@@ -128,18 +199,49 @@ We do indeed so how our IR system is accurate!
 ## Files Included In The .gitignore ⚙️
 We have a few files in the .gitignore:
 - DS._STORE (MAC OS File)
-- Results_Scores/inverted_index.json (too large cannot push to github)
-- Results_Scores/preprocessed_documents.json (too large cannot push to github)
-- Results_Scores/preprocessed_queries.json (too large cannot push to github)
-- Results_Scores/AllScoresAllQueries.txt (too large cannot push to github)
+- Results_Scores/Building/inverted_index.json (too large cannot push to github)
+- Results_Scores/Building/preprocessed_documents.json (too large cannot push to github)
+- Results_Scores/Building/preprocessed_queries.json (too large cannot push to github)
+- Results_Scores/BM25/AllScoresAllQueries.txt (too large cannot push to github)
 - IR_Files/__pycache__/ (not needed)
 
-## Conclusion 🌴
-In this assignment, we created an IR System! We leveraged Python, built in libraries, specific data structures and algorithms, as well as the BM25 ranking algorithm.
+## Evaluation & Explaination of Model Performance 🏎️
+Our model performance in order is the following:
+1. MINI LM
+2. BM25
+3. ELECTRA
+4. BERT
 
-Concluding our report, we see that our IR System is quite accurate with a high mapping score, and documents that have high scores with their associated queries are indeed related.
+As you can see with the MINI LM we scored the highest P@10 & MAP score with a final result of around 0.62-0.63, which is roughly a 0.4 increase from the initial BM25 model implemented in A1. The original MAP score was 0.59.
+
+While other models such as the ELECTRA and BERT actually caused lower scores, and caused the MAP score to drop after reranking. Specifically speaking, ELECTRA resulted in a MAP score of ~0.47 while BERT resulted in a MAP score of ~0.05.
+
+We also wanted to quickly highlight running times for all of our models. On a 2021 Macbook Pro with an Apple M1 Pro Chip with 16 GB in RAM, the following times were achieved:
+1. MINI LM = ~8 minutes
+2. BM25 = ~30 seconds
+3. ELECTRA = ~1 hour
+4. BERT = ~5 hours
+
+Now discussing model performance, we evaluated and highlighted that the MINI LM outperformed others due to its efficient, lightweight architecture that captures nuanced semantic relationships exceptionally well, enabling it to deliver higher precision at top ranks and an improved MAP score while significantly reducing computational overhead compared to models like ELECTRA and BERT. Furthermore MINI LM was implemented with weighting which played a major factor in retrieving higher scores.
+
+We evaluated that ELECTRA & BERT caused lower scores because their cross encoder implementations, while theoretically capable of capturing intricate semantic nuances by jointly processing query-document pairs, introduced substantial computational complexity and were more prone to overfitting on our limited training data. This led to inefficient generalization across diverse queries and ultimately diminished the ranking performance compared to more optimized and lightweight models like MINI LM. Furthermore, it is hard for these models to rerank with only 100 documents to work with, because the initial results were used from the IR system.
+
+We also noticed that the initial model was still quite strong—BM25 is generally a strong algorithm, so its robust performance underscores the enduring effectiveness of traditional retrieval techniques. Despite the advances seen with neural models, BM25’s efficient term weighting and inverse document frequency calculations continue to deliver competitive baseline results. This resilience makes it an indispensable starting point, especially when computational resources are constrained or when used in conjunction with re-ranking strategies such as cross encoders, which can further refine results without entirely replacing the foundational BM25 retrieval.
+
+## Conclusion 🌴
+In this assignment, we created an IR System with different neural models. We leveraged Python, built in libraries, specific data structures and algorithms, SentenceTransformers, BEIR Framework, as well as the BM25 ranking algorithm as our BASE.
+
+In our report, we see that our IR System is quite accurate with a high mapping score, and documents that have high scores with their associated queries are indeed related.
+
+In conclusion, our highest performing model was the MINI LM model as it leverages weights and is able to capture more nuanced semantic relationships.
 
 ## References/Works Cited 📝
 Connelly, S. (2024, September 13). Practical BM25 - part 2: The BM25 algorithm and its variables. Elastic Blog. https://www.elastic.co/blog/practical-bm25-part-2-the-bm25-algorithm-and-its-variables
+
+Cross-Encoders — Sentence Transformers  documentation. (n.d.). Retrieved March 27, 2025, from https://www.sbert.net/examples/applications/cross-encoder/README.html
+
+SentenceTransformers Documentation — Sentence Transformers  documentation. (n.d.). Retrieved March 27, 2025, from https://sbert.net/
+
+sentence-transformers/all-MiniLM-L6-v2 · Hugging Face. (n.d.). Retrieved March 27, 2025, from https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
 
 YILMAZ,  &Ouml;mer. (2024, February 27). Mastering stemming algorithms in Natural Language Processing: A complete guide with python... Medium. https://medium.com/@omrylmzz35/mastering-stemming-algorithms-in-natural-language-processing-a-complete-guide-with-python-e7fd12089a69

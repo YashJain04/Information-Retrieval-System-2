@@ -1,12 +1,6 @@
-import tensorflow as tf
-import json
-import torch
 from ranking import BM25
 from customizer import CustomRerank
 from utils import *
-from beir.retrieval import models
-from beir.retrieval.search.dense import DenseRetrievalExactSearch as DRES
-from beir.retrieval.evaluation import EvaluateRetrieval
 from beir.reranking.models import CrossEncoder
 from beir.reranking import Rerank
 from sentence_transformers import SentenceTransformer, util

@@ -1,4 +1,3 @@
-import tensorflow as tf
 from parser import *
 from preprocessing import *
 from indexing import *

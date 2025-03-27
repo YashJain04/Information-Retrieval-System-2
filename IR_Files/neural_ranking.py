@@ -13,7 +13,7 @@ from sentence_transformers import SentenceTransformer, util
 
 def create_model(model_type, model_name, documents, inverted_index, documents_length):
     """
-    Load a specific model in [BM25, BERT, ELECTRA, MINILM]
+    Load a specific model in [BM25, ELECTRA, MINILM]
     """
     if model_type == 'BM25':
         return BM25(inverted_index, documents_length)
@@ -113,11 +113,6 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
         print("Results are being returned.")
         results = combined_results
     
-    elif reranking == "BERT":
-        BERT_model = create_model("cross-encoder", "cross-encoder/nli-distilroberta-base", None, None, None)
-        reranker = CustomRerank(BERT_model, batch_size=128)
-        results = reranker.rerank(corpus, query_dict, bm25_results, top_k=100)
-    
     elif reranking == "ELECTRA":
         ELECTRA_model = create_model("cross-encoder", "cross-encoder/ms-marco-electra-base", None, None, None)
         reranker = Rerank(ELECTRA_model, batch_size=128)
@@ -211,15 +206,10 @@ def neural_rank_documents_head_only(model_type, model_name, documents, inverted_
         
         results = combined_results
     
-    elif reranking == "BERT":
-        print("\nBERT head-only re-ranking branch.")
-        BERT_model = create_model("cross-encoder", "cross-encoder/nli-distilroberta-base", None, None, None)
-        reranker = CustomRerank(BERT_model, batch_size=128)
-        results = reranker.rerank_head_only(corpus, query_dict, bm25_results, top_k=100)
-    
     elif reranking == "ELECTRA":
         print("\nELECTRA head-only re-ranking branch.")
         ELECTRA_model = create_model("cross-encoder", "cross-encoder/ms-marco-electra-base", None, None, None)
+        # the standard re-ranker is NOT used because it’s designed to work with richer document representations (i.e., both title and text)
         reranker = CustomRerank(ELECTRA_model, batch_size=128)
         results = reranker.rerank_head_only(corpus, query_dict, bm25_results, top_k=100)
     

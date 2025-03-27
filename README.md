@@ -18,11 +18,11 @@
 - Implemented, ran, and evaluated the TITLE vs TEXT/TITLE for all models
 
 2. Tolu Emoruwa's Work... 📗
-- Implemented the original BERT model and created base framework for other models
-- Implemented the final BERT model
+- Created the base framework for all models to work
 - Implemented parts of Neural Ranking (neural_ranking.py)
 - Ran final program to ensure everything works and is submission ready
-- Researched different models for BERT (SentenceTransformers vs CrossEncoders)
+- Researched different models for BERT, MINI LM, and ELECTRA and understood difference of SentenceTransformers vs CrossEncoders
+- Decided final models to implement for fast processing times + higher scores
 - Documentation of code and program
 - Researched RERANKING process use case of CrossEncoders
 - Wrote explaination of final results (understanding as to why some models score higher than others)
@@ -57,9 +57,8 @@ The `main.py` file contains our main program which is used for running the code.
 - Completes Step 2 (basically the code inside `indexing.py` file) and calculates the time to do so
 - Completes Step 3 (getting document lengths)
 - Completes Step 4.0 (computation of the BM25 model which is our initial model)
-- Completes Step 4.1 (computation of the BERT model)
-- Completes Step 4.2 (computation of the ELECTRA model)
-- Completes Step 4.3 (computation of the MINI LM model)
+- Completes Step 4.1 (computation of the ELECTRA model)
+- Completes Step 4.2 (computation of the MINI LM model)
 - Completes Step 5 (computing MAP scores through PYTREC_EVAL)
 - Completes Step 6 (computing P@10 scores through PYTREC_EVAL)
 - Completes Step 7 (retrieving TOP 10 DOCUMENTS FIRST 2 QUERIES for all models)
@@ -97,7 +96,7 @@ In this step, we use our inverted index from STEP 2 to complete the ranking, sco
 
 This step's output is stored in the `Results_Scores/BM25/TopScoresAllQueries.txt` file and here you can see our final results. The associated code and functions for this step can be seen in the `ranking.py` file. This step also creates 2 more files `Results_Scores/BM25/Top10AnswersFirst2Queries.txt` which is our top 10 scores for the first 2 queries and `Results_Scores/BM25/AllScoresAllQueries.txt` which is our scores for all queries. Lastly, this step creates the final results file as well in the `Results_Scores/BM25/Results.txt` which contains the top 100 document scores for the queries. This `Results_Scores/BM25/Results.txt` is the file we use in our PYTREC_EVAL to retrieve the MAP Score and compare it against test.tsv. We skip the first 80735 lines to ensure we only get queries that are apparent in the test.tsv file, i.e. the test queries.
 
-The same is done for the BERT, ELECTRA, and MINI_LM model.
+The same is done for the ELECTRA, and MINI_LM model.
 
 ### 3.1 Justification of BM25 Algorithm Over Cosine Simularity ✏️
 We decided to leverage the BM25 Algorithm because it has a higher retrieval performance and also lead to faster processing times. When we implemented the COSINE SIM ranking algorithm, our code took around ~15-30 minutes to run. With the BM25 algorithm, our code was processed within seconds, thus we decided to finalize on the BM25 Algorithm and neglect the COSINE SIM algorithm.
@@ -105,7 +104,6 @@ We decided to leverage the BM25 Algorithm because it has a higher retrieval perf
 ## Mean Average Precision (MAP) Score: 📊
 Our models have varying MAP scores. Please refer to the stats below:
 - BM25 : 0.595 `Results_Scores/MAP_P10/BM25_MAP_P10_SCORE.json`
-- BERT : 0.0564 `Results_Scores/MAP_P10/BERT_MAP_P10_SCORE.json`
 - ELECTRA : 0.4904 `Results_Scores/MAP_P10/ELECTRA_MAP_P10_SCORE.json`
 - MINI_LM : 0.6223 `Results_Scores/MAP_P10/MINI_LM_MAP_P10_SCORE.json`
 
@@ -114,7 +112,6 @@ Scores can be found in there associated files.
 ## P@10 Score: 📊
 Our models have varying P@10 scores. Please refer to the stats below:
 - BM25 : 0.0833 `Results_Scores/MAP_P10/BM25_MAP_P10_SCORE.json`
-- BERT : 0.0143 `Results_Scores/MAP_P10/BERT_MAP_P10_SCORE.json`
 - ELECTRA : 0.0723 `Results_Scores/MAP_P10/ELECTRA_MAP_P10_SCORE.json`
 - MINI_LM : 0.088 `Results_Scores/MAP_P10/MINI_LM_MAP_P10_SCORE.json`
 
@@ -125,9 +122,6 @@ TITLE ONLY - MAP & P@10
 - BM25 MAP = 0.3716
 - BM25 P@10 = 0.0574
 
-- BERT MAP = 0.0226
-- BERT P@10 = 0.0031
-
 - ELECTRA MAP = 0.3891
 - ELECTRA P@10 = 0.0582
 
@@ -137,9 +131,6 @@ TITLE ONLY - MAP & P@10
 TITLE + TEXT - MAP & P@10
 - BM25 MAP = 0.595
 - BM25 P@10 = 0.0833
-
-- BERT MAP = 0.0564
-- BERT P@10 = 0.0143
 
 - ELECTRA MAP = 0.4904
 - ELECTRA P@10 = 0.0723
@@ -217,31 +208,26 @@ Our model performance in order is the following:
 1. MINI LM
 2. BM25
 3. ELECTRA
-4. BERT
 
 As you can see with the MINI LM we scored the highest P@10 & MAP score with a final result of around 0.62-0.63, which is roughly a 0.4 increase from the initial BM25 model implemented in A1. The original MAP score was 0.59.
 
-While other models such as the ELECTRA and BERT actually caused lower scores, and caused the MAP score to drop after reranking. Specifically speaking, ELECTRA resulted in a MAP score of ~0.47 while BERT resulted in a MAP score of ~0.05.
+While other models such as the ELECTRA actually caused lower scores, and caused the MAP score to drop after reranking. Specifically speaking, ELECTRA resulted in a MAP score of ~0.47.
 
 We also wanted to quickly highlight running times for all of our models. On a 2021 Macbook Pro with an Apple M1 Pro Chip with 16 GB in RAM, the following times were achieved for TITLE:
 1. MINI LM = ~1 minute
 2. BM25 = ~10 seconds
 3. ELECTRA = ~3 minutes
-4. BERT = ~8 minutes
 
 We also wanted to quickly highlight running times for all of our models. On a 2021 Macbook Pro with an Apple M1 Pro Chip with 16 GB in RAM, the following times were achieved for TITLE + TEXT:
 1. MINI LM = ~8 minutes
 2. BM25 = ~30 seconds
 3. ELECTRA = ~1 hour
-4. BERT = ~3.5 hours
 
-Now discussing model performance, we evaluated and highlighted that the MINI LM outperformed others due to its efficient, lightweight architecture that captures nuanced semantic relationships exceptionally well, enabling it to deliver higher precision at top ranks and an improved MAP score while significantly reducing computational overhead compared to models like ELECTRA and BERT. Furthermore MINI LM was implemented with weighting which played a major factor in retrieving higher scores.
+Now discussing model performance, we evaluated and highlighted that the MINI LM outperformed others due to its efficient, lightweight architecture that captures nuanced semantic relationships exceptionally well, enabling it to deliver higher precision at top ranks and an improved MAP score while significantly reducing computational overhead compared to models like ELECTRA. Furthermore MINI LM was implemented with weighting which played a major factor in retrieving higher scores.
 
-We evaluated that ELECTRA & BERT caused lower scores because their cross encoder implementations, while theoretically capable of capturing intricate semantic nuances by jointly processing query-document pairs, introduced substantial computational complexity and were more prone to overfitting on our limited training data. This led to inefficient generalization across diverse queries and ultimately diminished the ranking performance compared to more optimized and lightweight models like MINI LM. Furthermore, it is hard for these models to rerank with only 100 documents to work with, because the initial results were used from the IR system.
+We evaluated that ELECTRA caused lower scores because their cross encoder implementations, while theoretically capable of capturing intricate semantic nuances by jointly processing query-document pairs, introduced substantial computational complexity and were more prone to overfitting on our limited training data. This led to inefficient generalization across diverse queries and ultimately diminished the ranking performance compared to more optimized and lightweight models like MINI LM. Furthermore, it is hard for these models to rerank with only 100 documents to work with, because the initial results were used from the IR system.
 
 We also noticed that the initial model was still quite strong—BM25 is generally a strong algorithm, so its robust performance underscores the enduring effectiveness of traditional retrieval techniques. Despite the advances seen with neural models, BM25’s efficient term weighting and inverse document frequency calculations continue to deliver competitive baseline results. This resilience makes it an indispensable starting point, especially when computational resources are constrained or when used in conjunction with re-ranking strategies such as cross encoders, which can further refine results without entirely replacing the foundational BM25 retrieval.
-
-Additionally, we also noticed our 3RD model implemented the BERT model had extremely low scores. Only 2 were required for the assignment - but we implemented a 3RD one for exploration, deep analysis, and to showcase/see BERT and how it would perform. From the results we saw a MAP score of 0.05! Which is incredibly low, but it makes for good analysis to see that BERT was outperformed by other models.
 
 Furthermore, we also wanted to highlight an interesting result we noticed. In our TITLE only implementation/run we saw that the ELECTRA model actually scored higher than the BM25 model. Which is particularly, interesting because for the TITLE + TEXT it scored lower. This goes to show that model performance is highly context-dependent—while ELECTRA's deep semantic understanding shines with concise inputs like titles, traditional term-based methods like BM25 can leverage the additional context provided by full-text data to improve retrieval accuracy. With the TEXT implementation BM25 was able to leverage that and in the end score an overall higher result.
 

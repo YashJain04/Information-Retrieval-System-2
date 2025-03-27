@@ -99,25 +99,7 @@ print(f"\nTime taken to complete STEP 4.0 - BM25 Model Ranking: {end_time - star
 print("")
 print("---------------------------------------------------------------------------------------")
 
-# STEP 4.1 - Neural Ranking (BERT RERANK)
-start_time = time.time() # start the timer
-print("---------------------------------------------------------------------------------------")
-print("")
-print("Computing BM25 Ranking with RE-RANKING using a BERT MODEL.")
-model_type = "BM25"
-model_name = None
-neural_results = neural_rank_documents(model_type, model_name, documents, inverted_index, doc_lengths, queries, "BERT")
-# neural_results = neural_rank_documents_head_only(model_type, model_name, documents, inverted_index, doc_lengths, queries, "BERT")
-# if you want to process head only, use the above line instead, and comment the line above it
-neural_save_results(neural_results, "../Results_Scores/BERT/Results.txt")
-# neural_save_results(neural_results, "../Results_Scores/BERT/Results_head_only.txt")
-# if you want to process head only, use the above line instead, and comment the line above it
-end_time = time.time() # end the timer
-print(f"\nTime taken to complete STEP 4.1 - BERT MODEL RE-RANKING: {end_time - start_time:.2f} seconds")
-print("")
-print("---------------------------------------------------------------------------------------")
-
-# STEP 4.2 - Neural Ranking (ELECTRA RERANK)
+# STEP 4.1 - Neural Ranking (ELECTRA RERANK)
 start_time = time.time() # start the timer
 print("---------------------------------------------------------------------------------------")
 print("")
@@ -135,7 +117,7 @@ print(f"\nTime taken to complete STEP 4.2 - ELECTRA MODEL RE-RANKING: {end_time 
 print("")
 print("---------------------------------------------------------------------------------------")
 
-# STEP 4.3 - Neural Ranking (MINI LM RERANK)
+# STEP 4.2 - Neural Ranking (MINI LM RERANK)
 start_time = time.time() # start the timer
 print("---------------------------------------------------------------------------------------")
 print("")
@@ -203,12 +185,10 @@ def read_run(file_path):
 # get the file paths
 qrel_file = "../scifact/qrels/test.tsv"
 run_bm25 = "../Results_Scores/BM25/Results.txt"
-run_bert = "../Results_Scores/BERT/Results.txt"
 run_electra = "../Results_Scores/ELECTRA/Results.txt"
 run_minilm = "../Results_Scores/MINI_LM/Results.txt"
 
 # run_bm25 = "../Results_Scores/BM25/Results_head_only.txt"
-# run_bert = "../Results_Scores/BERT/Results_head_only.txt"
 # run_electra = "../Results_Scores/ELECTRA/Results_head_only.txt"
 # run_minilm = "../Results_Scores/MINI_LM/Results_head_only.txt"
 # if you want to process head only, use the above lines instead, and comment the lines above it
@@ -216,34 +196,27 @@ run_minilm = "../Results_Scores/MINI_LM/Results.txt"
 # read the files (qrel) and (run)
 qrel = read_qrel(qrel_file)
 run_bm25 = read_run(run_bm25)
-run_bert = read_run(run_bert)
 run_electra = read_run(run_electra)
 run_minilm = read_run(run_minilm)
 
 # evaluate using pytrec_eval
 evaluator = pytrec_eval.RelevanceEvaluator(qrel, {'map', 'P_10'})
 results_bm25 = evaluator.evaluate(run_bm25)
-results_bert = evaluator.evaluate(run_bert)
 results_electra = evaluator.evaluate(run_electra)
 results_minilm = evaluator.evaluate(run_minilm)
 
 # save the results to a file
 output_file_bm25 = '../Results_Scores/MAP_P10/BM25_MAP_P10_SCORE.json'
-output_file_bert = '../Results_Scores/MAP_P10/BERT_MAP_P10_SCORE.json'
 output_file_electra = '../Results_Scores/MAP_P10/ELECTRA_MAP_P10_SCORE.json'
 output_file_minilm = '../Results_Scores/MAP_P10/MINI_LM_MAP_P10_SCORE.json'
 
 # output_file_bm25 = '../Results_Scores/MAP_P10/BM25_MAP_P10_SCORE_head_only.json'
-# output_file_bert = '../Results_Scores/MAP_P10/BERT_MAP_P10_SCORE_head_only.json'
 # output_file_electra = '../Results_Scores/MAP_P10/ELECTRA_MAP_P10_SCORE_head_only.json'
 # output_file_minilm = '../Results_Scores/MAP_P10/MINI_LM_MAP_P10_SCORE_head_only.json'
 # if you want to process head only, use the above lines instead, and comment the lines above it
 
 with open(output_file_bm25, 'w') as f:
     json.dump(results_bm25, f, indent=1)
-
-with open(output_file_bert, 'w') as f:
-    json.dump(results_bert, f, indent=1)
 
 with open(output_file_electra, 'w') as f:
     json.dump(results_electra, f, indent=1)
@@ -253,25 +226,21 @@ with open(output_file_minilm, 'w') as f:
 
 # return the path to the results file
 print(f"Evaluation results for BM25 model saved to {output_file_bm25}")
-print(f"Evaluation results for BERT model saved to {output_file_bert}")
 print(f"Evaluation results for ELECTRA model saved to {output_file_electra}")
 print(f"Evaluation results for MINI LM model saved to {output_file_minilm}")
 
 # get the average MAP score - average map scores for all queries
 total_map_bm25 = sum(results_bm25[query]['map'] for query in results_bm25) / len(results_bm25)
-total_map_bert = sum(results_bert[query]['map'] for query in results_bert) / len(results_bert)
 total_map_electra = sum(results_electra[query]['map'] for query in results_electra) / len(results_electra)
 total_map_minilm = sum(results_minilm[query]['map'] for query in results_minilm) / len(results_minilm)
 
 # round to 4 decimal places
 total_map_bm25 = round(total_map_bm25, 4)
-total_map_bert = round(total_map_bert, 4)
 total_map_electra = round(total_map_electra, 4)
 total_map_minilm = round(total_map_minilm, 4)
 
 # print the average map score
 print("The average MAP Score for the INITIAL BM25 MODEL is : ", total_map_bm25)
-print("The average MAP Score for the BERT MODEL is: ", total_map_bert)
 print("The average MAP Score for the ELECTRA MODEL is: ", total_map_electra)
 print("The average MAP Score for the MINI LM MODEL is: ", total_map_minilm)
 
@@ -285,25 +254,21 @@ start_time = time.time() # start the timer
 print("---------------------------------------------------------------------------------------")
 print("")
 print("Computing P@10 for the BM25 MODEL.")
-print("Computing P@10 for the BERT MODEL.")
 print("Computing P@10 for the ELECTRA MODEL.")
 print("Computing P@10 for the MINI_LM MODEL.")
 
 # get the average P@10 score - average P@10 for all queries
 total_p10_bm25 = sum(results_bm25[query]['P_10'] for query in results_bm25) / len(results_bm25)
-total_p10_bert = sum(results_bert[query]['P_10'] for query in results_bert) / len(results_bert)
 total_p10_electra = sum(results_electra[query]['P_10'] for query in results_electra) / len(results_electra)
 total_p10_minilm = sum(results_minilm[query]['P_10'] for query in results_minilm) / len(results_minilm)
 
 # round to 4 decimal places
 total_p10_bm25 = round(total_p10_bm25, 4)
-total_p10_bert = round(total_p10_bert, 4)
 total_p10_electra = round(total_p10_electra, 4)
 total_p10_minilm = round(total_p10_minilm, 4)
 
 # print the average P@10 score
 print("The average P@10 Score for the INITIAL BM25 MODEL is : ", total_p10_bm25)
-print("The average P@10 Score for the BERT MODEL is: ", total_p10_bert)
 print("The average P@10 Score for the ELECTRA MODEL is: ", total_p10_electra)
 print("The average P@10 Score for the MINI LM MODEL is: ", total_p10_minilm)
 
@@ -436,13 +401,12 @@ bm25_dest = os.path.join(output_dir, "BM25_TOP_10_DOCS_FIRST_2_QUERIES.txt")
 with open(bm25_source, 'r') as f_in, open(bm25_dest, 'w') as f_out:
     for line in f_in:
         f_out.write(rename_last_column(line))
-print("Computing Top 10 Documents First 2 Queries for the BERT MODEL.")
 print("Computing Top 10 Documents First 2 Queries for the ELECTRA MODEL.")
 print("Computing Top 10 Documents First 2 Queries for the MINI LM MODEL.")
 print("Processed ../Results_Scores/BM25/Top10AnswersFirst2Queries.txt and wrote results to ../Results_Scores/TOP_10_DOCS_FIRST_2_QUERIES/BM25_TOP_10_DOCS_FIRST_2_QUERIES.txt")
 # print("Processed ../Results_Scores/BM25/Top10AnswersFirst2Queries_head_only.txt and wrote results to ../Results_Scores/TOP_10_DOCS_FIRST_2_QUERIES/BM25_TOP_10_DOCS_FIRST_2_QUERIES_head_only.txt")
 # if you want to process head only, use the above line instead, and comment the line above it
-models = ["BERT", "ELECTRA", "MINI_LM"]
+models = ["ELECTRA", "MINI_LM"]
 for model in models:
     input_path = f"../Results_Scores/{model}/Results.txt"
     # input_path = f"../Results_Scores/{model}/Results_head_only.txt"

@@ -223,17 +223,29 @@ As you can see with the MINI LM we scored the highest P@10 & MAP score with a fi
 
 While other models such as the ELECTRA and BERT actually caused lower scores, and caused the MAP score to drop after reranking. Specifically speaking, ELECTRA resulted in a MAP score of ~0.47 while BERT resulted in a MAP score of ~0.05.
 
-We also wanted to quickly highlight running times for all of our models. On a 2021 Macbook Pro with an Apple M1 Pro Chip with 16 GB in RAM, the following times were achieved:
+We also wanted to quickly highlight running times for all of our models. On a 2021 Macbook Pro with an Apple M1 Pro Chip with 16 GB in RAM, the following times were achieved for TITLE:
+1. MINI LM = ~1 minute
+2. BM25 = ~10 seconds
+3. ELECTRA = ~3 minutes
+4. BERT = ~8 minutes
+
+We also wanted to quickly highlight running times for all of our models. On a 2021 Macbook Pro with an Apple M1 Pro Chip with 16 GB in RAM, the following times were achieved for TITLE + TEXT:
 1. MINI LM = ~8 minutes
 2. BM25 = ~30 seconds
 3. ELECTRA = ~1 hour
-4. BERT = ~5 hours
+4. BERT = ~3.5 hours
 
 Now discussing model performance, we evaluated and highlighted that the MINI LM outperformed others due to its efficient, lightweight architecture that captures nuanced semantic relationships exceptionally well, enabling it to deliver higher precision at top ranks and an improved MAP score while significantly reducing computational overhead compared to models like ELECTRA and BERT. Furthermore MINI LM was implemented with weighting which played a major factor in retrieving higher scores.
 
 We evaluated that ELECTRA & BERT caused lower scores because their cross encoder implementations, while theoretically capable of capturing intricate semantic nuances by jointly processing query-document pairs, introduced substantial computational complexity and were more prone to overfitting on our limited training data. This led to inefficient generalization across diverse queries and ultimately diminished the ranking performance compared to more optimized and lightweight models like MINI LM. Furthermore, it is hard for these models to rerank with only 100 documents to work with, because the initial results were used from the IR system.
 
 We also noticed that the initial model was still quite strong—BM25 is generally a strong algorithm, so its robust performance underscores the enduring effectiveness of traditional retrieval techniques. Despite the advances seen with neural models, BM25’s efficient term weighting and inverse document frequency calculations continue to deliver competitive baseline results. This resilience makes it an indispensable starting point, especially when computational resources are constrained or when used in conjunction with re-ranking strategies such as cross encoders, which can further refine results without entirely replacing the foundational BM25 retrieval.
+
+Additionally, we also noticed our 3RD model implemented the BERT model had extremely low scores. Only 2 were required for the assignment - but we implemented a 3RD one for exploration, deep analysis, and to showcase/see BERT and how it would perform. From the results we saw a MAP score of 0.05! Which is incredibly low, but it makes for good analysis to see that BERT was outperformed by other models.
+
+Furthermore, we also wanted to highlight an interesting result we noticed. In our TITLE only implementation/run we saw that the ELECTRA model actually scored higher than the BM25 model. Which is particularly, interesting because for the TITLE + TEXT it scored lower. This goes to show that model performance is highly context-dependent—while ELECTRA's deep semantic understanding shines with concise inputs like titles, traditional term-based methods like BM25 can leverage the additional context provided by full-text data to improve retrieval accuracy. With the TEXT implementation BM25 was able to leverage that and in the end score an overall higher result.
+
+Overall, the best performing model given the context of only TITLES, and even TITLES/TEXT was the MINI_LM. This model leverages weights, and also in terms of time/speed performs relatively well. While BM25, is still the fastest, it is no longer the best, as MINI_LM outshines it, with fast speed and higher accuracy.
 
 ## Conclusion 🌴
 In this assignment, we created an IR System with different neural models. We leveraged Python, built in libraries, specific data structures and algorithms, SentenceTransformers, BEIR Framework, as well as the BM25 ranking algorithm as our BASE.

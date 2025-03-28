@@ -219,9 +219,9 @@ We also wanted to quickly highlight running times for all of our models. On a 20
 3. ELECTRA = ~3 minutes
 
 We also wanted to quickly highlight running times for all of our models. On a 2021 Macbook Pro with an Apple M1 Pro Chip with 16 GB in RAM, the following times were achieved for TITLE + TEXT:
-1. MINI LM = ~8 minutes
-2. BM25 = ~30 seconds
-3. ELECTRA = ~1 hour
+1. MINI LM = ~9 minutes
+2. BM25 = ~20 seconds
+3. ELECTRA = ~1.5 hour
 
 Now discussing model performance, we evaluated and highlighted that the MINI LM outperformed others due to its efficient, lightweight architecture that captures nuanced semantic relationships exceptionally well, enabling it to deliver higher precision at top ranks and an improved MAP score while significantly reducing computational overhead compared to models like ELECTRA. Furthermore MINI LM was implemented with weighting which played a major factor in retrieving higher scores.
 

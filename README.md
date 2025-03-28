@@ -138,7 +138,7 @@ TITLE + TEXT - MAP & P@10
 - MINI_LM MAP = 0.6223
 - MINI_LM P@10 = 0.088
 
-The code needed to change the program to preprocess only the head text without the body is found in `main.py`. Searching the document for "head_only" will show three lines that have been commented out. If you un-comment them and comment out the original functions, it'll run preprocessing with only the head text.
+The code needed to change the program to preprocess only the head text without the body is found in `main.py`. Searching the document for "head_only" will show three lines that have been commented out. If you un-comment them and comment out the original functions, it'll run preprocessing with only the head text. Or you can simply run `main_head.py` as it has already the changes configured.
 
 NOTE: All TITLE only files have the same format as their counterparts with TITLE + TEXT, and can be found/seen with the "_head_only" text added at the end.
 
@@ -214,9 +214,9 @@ As you can see with the MINI LM we scored the highest P@10 & MAP score with a fi
 While other models such as the ELECTRA actually caused lower scores, and caused the MAP score to drop after reranking. Specifically speaking, ELECTRA resulted in a MAP score of ~0.47.
 
 We also wanted to quickly highlight running times for all of our models. On a 2021 Macbook Pro with an Apple M1 Pro Chip with 16 GB in RAM, the following times were achieved for TITLE:
-1. MINI LM = ~1 minute
-2. BM25 = ~10 seconds
-3. ELECTRA = ~3 minutes
+1. MINI LM = ~3 minutes
+2. BM25 = ~5 seconds
+3. ELECTRA = ~7 minutes
 
 We also wanted to quickly highlight running times for all of our models. On a 2021 Macbook Pro with an Apple M1 Pro Chip with 16 GB in RAM, the following times were achieved for TITLE + TEXT:
 1. MINI LM = ~9 minutes

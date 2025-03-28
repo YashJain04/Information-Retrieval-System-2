@@ -1,5 +1,14 @@
 # Submission Details 📖
 
+# Important Navigational Links & Information For TA
+- All results can be found in the `Results_Scores` folder it contains MAP, P@10, top 10 documents for the first 2 queries, Results.txt on all the models, and the Results.txt for head only and the building/preprocessing steps, and a sample 100 vocabulary
+- We used BM25 from our initial IR A1 system
+- Our 2 neural models were: ELECTRA & MINI-LM
+- Run `main.py` for TITLE + TEXT or `main_head.py` for only TITLE
+- All scores listed can be seen at [Scores](#comparing-results-title-vs-title--text-)
+- Our evaluation/explaination can be seen at [Evaluation](#evaluation--explaination-of-model-performance-️)
+- Sample runs can be found in the `Sample_Runs` folder and images can be seen there as well
+
 ## Students Information: 📖
 - Yash Jain : 300245571
 - Tolu Emoruwa : 300230905
@@ -13,7 +22,7 @@
 - Implemented parts of Neural Ranking (neural_ranking.py)
 - Implemented CustomReranker (customizer.py)
 - Researched different models for MINI_LM (SentenceTransformers)
-- Documentation of code and program
+- Added README navigational links for TA
 - Created TOP 10 documents FIRST 2 queries for all models (STEP 7)
 - Implemented, ran, and evaluated the TITLE vs TEXT/TITLE for all models
 
@@ -143,10 +152,10 @@ The code needed to change the program to preprocess only the head text without t
 NOTE: All TITLE only files have the same format as their counterparts with TITLE + TEXT, and can be found/seen with the "_head_only" text added at the end.
 
 Please see the image below to refer to an example run. This is for the TITLE ONLY.
-![Example Run](Example_TitleOnly.png)
+![Example Run](Sample_Runs/Example_TitleOnly.png)
 
 Please see the image below to refer to an example run. This is for the TITLE + TEXT.
-![Example Run](Example_Title&Text.png)
+![Example Run](Sample_Runs/Example_Title&Text.png)
 
 After analyzing, these results it's clear that TITLE + TEXT generally retrieves higher scores in terms of MAP + PRECISION. Using the full set of data with text, allows better retrieval and context gathering for the model, as they have more information to work with. If you see the `Sample100Vocabulary_head_only.txt` you can see that there is limited information to be gathered only from the TITLE. This file shows a sample of 100 vocabulary with head only.
 

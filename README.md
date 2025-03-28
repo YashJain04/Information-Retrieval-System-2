@@ -6,7 +6,7 @@
 - Our 2 neural models were: ELECTRA & MINI-LM
 - Run `main.py` for TITLE + TEXT or `main_head.py` for only TITLE
 - All scores listed can be seen at [Scores](#comparing-results-title-vs-title--text-)
-- Our evaluation/explaination can be seen at [Evaluation](#evaluation--explaination-of-model-performance-️)
+- Our evaluation/explaination can be seen at [Evaluation & Explaination of Model Performance/DSA/Optimization](#evaluation-of-model-performance--explaination-of-dsaoptimization-️)
 - Sample runs can be found in the `Sample_Runs` folder and images can be seen there as well
 
 ## Students Information: 📖
@@ -212,7 +212,7 @@ We have a few files in the .gitignore:
 - Results_Scores/BM25/AllScoresAllQueries.txt (too large cannot push to github)
 - IR_Files/__pycache__/ (not needed)
 
-## Evaluation & Explaination of Model Performance 🏎️
+## Evaluation of Model Performance & Explaination of DSA/Optimization 🏎️
 Our model performance in order is the following:
 1. MINI LM
 2. BM25
@@ -241,6 +241,8 @@ We also noticed that the initial model was still quite strong—BM25 is generall
 Furthermore, we also wanted to highlight an interesting result we noticed. In our TITLE only implementation/run we saw that the ELECTRA model actually scored higher than the BM25 model. Which is particularly, interesting because for the TITLE + TEXT it scored lower. This goes to show that model performance is highly context-dependent—while ELECTRA's deep semantic understanding shines with concise inputs like titles, traditional term-based methods like BM25 can leverage the additional context provided by full-text data to improve retrieval accuracy. With the TEXT implementation BM25 was able to leverage that and in the end score an overall higher result.
 
 Overall, the best performing model given the context of only TITLES, and even TITLES/TEXT was the MINI_LM. This model leverages weights, and also in terms of time/speed performs relatively well. While BM25, is still the fastest, it is no longer the best, as MINI_LM outshines it, with fast speed and higher accuracy.
+
+Throughout our program we leveraged several DSA. For example, from the INITIAL IR System with BM25 implementation we used dictionaries for building the inverted index. Thus, this same thought and process was carried throughout the assignment, for example in the neural ranking we leveraged the dictionary by iterating through its items. Moreover, further optimization can be seen when we computed the HEAD only run. We introduced several new functions, which skip the TEXT portion, and by doing so our HEAD run is quite fast! Additionally, we also implemented a CustomReranker function. This is in accordance with the HEAD only processing, because the regular ranker from the BEIR framework (which is built from/on SentenceTransformers) also expects TEXT to go along with it. This can severely impact the scores, cause parsing errors, and more, which is what we ran into. Hence, we implemented a Custom ReRanker. Furthermore, one of our major optimizations was indeed the weighting and `total_score` function within the MINI-LM model which resulted in higher scores, and our best score!
 
 ## Conclusion 🌴
 In this assignment, we created an IR System with different neural models. We leveraged Python, built in libraries, specific data structures and algorithms, SentenceTransformers, BEIR Framework, as well as the BM25 ranking algorithm as our BASE.

@@ -1,0 +1,123 @@
+yashjain@MacBookPro CSI 4107 2 % cd IR_Files
+yashjain@MacBookPro IR_Files % python3 main.py
+[nltk_data] Downloading package punkt_tab to
+[nltk_data]     /Users/yashjain/nltk_data...
+[nltk_data]   Package punkt_tab is already up-to-date!
+---------------------------------------------------------------------------------------
+
+Parsing documents
+Time taken to complete STEP 0 (PARSING DOCS): 0.00 seconds
+
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+
+Preprocessing documents
+100.00%|██████████████████████████████████████████████████| 5183/5183
+Time taken to parse and preprocess documents: 7.48 seconds
+100.00%|██████████████████████████████████████████████████| 5183/5183
+Time taken to parse and preprocess documents: 7.42 seconds
+Preprocessing queries
+The length of the vocabulary is 5183
+Time taken to complete STEP 1 (PREPROCESS DOCS/QUERIES): 15.18 seconds
+
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+
+Building an inverted index.
+Time taken to complete STEP 2 (BUILD INVERTED INDEX): 0.28 seconds
+
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+
+Getting document lengths.
+Time taken to complete STEP 3 (GETTING DOC_LENGTHS): 0.00 seconds
+
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+
+Computing BM25 Ranking. This is our Initial IR System from Assignment 1.
+Ranking documents and showing progress bars. If for some reason progress bars get stuck, note that it is just a visual glitch. Everything is indeed loaded correctly.
+Ranking top documents for all queries and creating associated file
+100.00%|██████████████████████████████████████████████████| 1109/1109
+Ranking top 10 documents for the first 2 queries and creating associated file
+100.00%|██████████████████████████████████████████████████| 1109/1109
+Ranking all documents for all queries and creating associated file
+100.00%|██████████████████████████████████████████████████| 1109/1109
+Ranking top 100 documents for all queries and creating associated file. This is the file that will be used for final evaluation.
+100.00%|██████████████████████████████████████████████████| 1109/1109
+Time taken to complete STEP 4.0 - BM25 Model Ranking: 21.15 seconds
+
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+
+Computing BM25 Ranking with RE-RANKING using an ELECTRA MODEL.
+Ranking documents and showing progress bars. If for some reason progress bars get stuck, note that it is just a visual glitch. Everything is indeed loaded correctly.
+Ranking top documents for all queries and creating associated file
+100.00%|██████████████████████████████████████████████████| 1109/1109
+Ranking top 10 documents for the first 2 queries and creating associated file
+100.00%|██████████████████████████████████████████████████| 1109/1109
+Ranking all documents for all queries and creating associated file
+100.00%|██████████████████████████████████████████████████| 1109/1109
+Ranking top 100 documents for all queries and creating associated file. This is the file that will be used for final evaluation.
+Batches: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 864/864 [1:24:43<00:00,  5.88s/it]
+
+Time taken to complete STEP 4.1 - ELECTRA MODEL RE-RANKING: 5131.54 seconds
+
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+
+Computing BM25 Ranking with RE-RANKING using a MINI LM MODEL.
+Ranking documents and showing progress bars. If for some reason progress bars get stuck, note that it is just a visual glitch. Everything is indeed loaded correctly.
+Ranking top documents for all queries and creating associated file
+100.00%|██████████████████████████████████████████████████| 1109/1109
+Ranking top 10 documents for the first 2 queries and creating associated file
+100.00%|██████████████████████████████████████████████████| 1109/1109
+Ranking all documents for all queries and creating associated file
+100.00%|██████████████████████████████████████████████████| 1109/1109
+Ranking top 100 documents for all queries and creating associated file. This is the file that will be used for final evaluation.
+100.00%|██████████████████████████████████████████████████| 1109/1109
+We are in the MINI LM Branch. We are computing now.
+We are iterating over the results retrieved from the initial IR system.
+We are using weighted sums now.
+Results are being returned.
+
+Time taken to complete STEP 4.2 - MINI_LM MODEL RE-RANKING: 542.81 seconds
+
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+
+Running The TREC_EVAL to retrieve the MAP Scores
+Evaluation results for BM25 model saved to ../Results_Scores/MAP_P10/BM25_MAP_P10_SCORE.json
+Evaluation results for ELECTRA model saved to ../Results_Scores/MAP_P10/ELECTRA_MAP_P10_SCORE.json
+Evaluation results for MINI LM model saved to ../Results_Scores/MAP_P10/MINI_LM_MAP_P10_SCORE.json
+The average MAP Score for the INITIAL BM25 MODEL is :  0.595
+The average MAP Score for the ELECTRA MODEL is:  0.4904
+The average MAP Score for the MINI LM MODEL is:  0.6223
+
+Time taken to complete STEP 5 - MAP COMPUTATION: 0.15 seconds
+
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+
+Computing P@10 for the BM25 MODEL.
+Computing P@10 for the ELECTRA MODEL.
+Computing P@10 for the MINI_LM MODEL.
+The average P@10 Score for the INITIAL BM25 MODEL is :  0.0833
+The average P@10 Score for the ELECTRA MODEL is:  0.0723
+The average P@10 Score for the MINI LM MODEL is:  0.088
+
+Time taken to complete STEP 6 - P@10 COMPUTATION: 0.00 seconds
+
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+
+Computing Top 10 Documents First 2 Queries for the INITIAL BM25 MODEL.
+Computing Top 10 Documents First 2 Queries for the ELECTRA MODEL.
+Computing Top 10 Documents First 2 Queries for the MINI LM MODEL.
+Processed ../Results_Scores/BM25/Top10AnswersFirst2Queries.txt and wrote results to ../Results_Scores/TOP_10_DOCS_FIRST_2_QUERIES/BM25_TOP_10_DOCS_FIRST_2_QUERIES.txt
+Processed ../Results_Scores/ELECTRA/Results.txt and wrote results to ../Results_Scores/TOP_10_DOCS_FIRST_2_QUERIES/ELECTRA_TOP_10_DOCS_FIRST_2_QUERIES.txt
+Processed ../Results_Scores/MINI_LM/Results.txt and wrote results to ../Results_Scores/TOP_10_DOCS_FIRST_2_QUERIES/MINI_LM_TOP_10_DOCS_FIRST_2_QUERIES.txt
+Time taken to complete STEP 7 - TOP 10 DOCUMENTS FIRST 2 QUERIES: 0.02 seconds
+
+---------------------------------------------------------------------------------------
+yashjain@MacBookPro IR_Files % 

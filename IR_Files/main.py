@@ -112,7 +112,7 @@ neural_save_results(neural_results, "../Results_Scores/ELECTRA/Results.txt")
 # neural_save_results(neural_results, "../Results_Scores/ELECTRA/Results_head_only.txt")
 # if you want to process head only, use the above line instead, and comment the line above it
 end_time = time.time() # end the timer
-print(f"\nTime taken to complete STEP 4.2 - ELECTRA MODEL RE-RANKING: {end_time - start_time:.2f} seconds")
+print(f"\nTime taken to complete STEP 4.1 - ELECTRA MODEL RE-RANKING: {end_time - start_time:.2f} seconds")
 print("")
 print("---------------------------------------------------------------------------------------")
 
@@ -130,7 +130,7 @@ neural_save_results(neural_results, "../Results_Scores/MINI_LM/Results.txt")
 # neural_save_results(neural_results, "../Results_Scores/MINI_LM/Results_head_only.txt")
 # if you want to process head only, use the above line instead, and comment the line above it
 end_time = time.time() # end the timer
-print(f"\nTime taken to complete STEP 4.3 - MINI_LM MODEL RE-RANKING: {end_time - start_time:.2f} seconds")
+print(f"\nTime taken to complete STEP 4.2 - MINI_LM MODEL RE-RANKING: {end_time - start_time:.2f} seconds")
 print("")
 print("---------------------------------------------------------------------------------------")
 

@@ -971,7 +971,7 @@ Computing BM25 Ranking with RE-RANKING using a MINI LM MODEL.
 Ranking top documents for all queries and creating associated file
 100.00%|██████████████████████████████████████████████████| 1109/1109
 Ranking top 10 documents for the first 2 queries and creating associated file
-73.13%|████████████████████████████████████--------------| 811/1109
+100.00%|██████████████████████████████████████████████████| 1109/1109
 Ranking all documents for all queries and creating associated file
 100.00%|██████████████████████████████████████████████████| 1109/1109
 Ranking top 100 documents for all queries and creating associated file.

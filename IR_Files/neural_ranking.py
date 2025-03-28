@@ -165,12 +165,17 @@ def neural_rank_documents_head_only(model_type, model_name, documents, inverted_
         tokens = query.get('title', []) + query.get('query', []) + query.get('narrative', [])
         query_dict[query['num']] = ' '.join(tokens)
     
+    print("Ranking documents and showing progress bars. If for some reason progress bars get stuck, note that it is just a visual glitch. Everything is indeed loaded correctly.")
+
     print("Ranking top documents for all queries and creating associated file")
     writeResults("../Results_Scores/BM25/TopScoresAllQueries_head_only.txt", queries, model, "top_scores_run")
+    
     print("\nRanking top 10 documents for the first 2 queries and creating associated file")
     writeResultsTop10First2("../Results_Scores/BM25/Top10AnswersFirst2Queries_head_only.txt", queries, model, "top_10_first_2_run")
+    
     print("\nRanking all documents for all queries and creating associated file")
     writeResultsAll("../Results_Scores/BM25/AllScoresAllQueries_head_only.txt", queries, model, "all_scores_run")
+    
     print("\nRanking top 100 documents for all queries and creating associated file.")
     bm25_results = writeResultsTop100("../Results_Scores/BM25/Results_head_only.txt", queries, model, "top_100_best_run")
         

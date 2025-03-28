@@ -13,6 +13,7 @@ query_file_path = '../scifact/queries.jsonl'
 # index_file_path = '../Results_Scores/Building/inverted_index.json'
 # preprocessed_docs_path = '../Results_Scores/Building/preprocessed_documents.json'
 # preprocessed_queries_path = '../Results_Scores/Building/preprocessed_queries.json'
+
 index_file_path = '../Results_Scores/Building/inverted_index_head_only.json'
 preprocessed_docs_path = '../Results_Scores/Building/preprocessed_documents_head_only.json'
 preprocessed_queries_path = '../Results_Scores/Building/preprocessed_queries_head_only.json'
@@ -183,6 +184,7 @@ def read_run(file_path):
 
 # get the file paths
 qrel_file = "../scifact/qrels/test.tsv"
+
 # run_bm25 = "../Results_Scores/BM25/Results.txt"
 # run_electra = "../Results_Scores/ELECTRA/Results.txt"
 # run_minilm = "../Results_Scores/MINI_LM/Results.txt"
@@ -194,6 +196,7 @@ run_minilm = "../Results_Scores/MINI_LM/Results_head_only.txt"
 
 # read the files (qrel) and (run)
 qrel = read_qrel(qrel_file)
+
 run_bm25 = read_run(run_bm25)
 run_electra = read_run(run_electra)
 run_minilm = read_run(run_minilm)

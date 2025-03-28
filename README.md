@@ -1,6 +1,6 @@
 # Submission Details 📖
 
-# Important Navigational Links & Information For TA
+# Important Navigational Links & Information For TA 📝
 - All results can be found in the `Results_Scores` folder it contains MAP, P@10, top 10 documents for the first 2 queries, Results.txt on all the models, and the Results.txt for head only and the building/preprocessing steps, and a sample 100 vocabulary
 - We used BM25 from our initial IR A1 system
 - Our 2 neural models were: ELECTRA & MINI-LM

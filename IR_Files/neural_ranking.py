@@ -1,3 +1,4 @@
+# imports
 from ranking import BM25
 from customizer import CustomRerank
 from utils import *
@@ -7,7 +8,7 @@ from sentence_transformers import SentenceTransformer, util
 
 def create_model(model_type, model_name, documents, inverted_index, documents_length):
     """
-    Load a specific model in [BM25, ELECTRA, MINILM]
+    load a specific model in [BM25, ELECTRA, MINILM, BERT]
     """
     if model_type == 'BM25':
         return BM25(inverted_index, documents_length)
@@ -23,7 +24,7 @@ def create_model(model_type, model_name, documents, inverted_index, documents_le
 
 def total_score(score_dict1, weight1, score_dict2, weight2):
     """
-    Create a total score which will be used for MAP evaluation by combining two sets of scores that have weights
+    create a total score which will be used for MAP evaluation by combining two sets of scores that have weights
     """
     try:
         w1 = float(weight1)
@@ -43,12 +44,13 @@ def total_score(score_dict1, weight1, score_dict2, weight2):
 
 def neural_rank_documents(model_type, model_name, documents, inverted_index, documents_length, queries, reranking):
     """
-    Rank the documents using the specified model.
+    rank the documents using the specified model for both title and text
     """
-    # For initial retrieval we use BM25
+
+    # initial retrieval using BM25
     model = create_model(model_type, model_name, documents, inverted_index, documents_length)
 
-    # Build a corpus dictionary from the documents using full TITLE+TEXT
+    # build a corpus dictionary from the documents using full TITLE+TEXT
     corpus = {}
     for doc in documents:
         corpus[doc['DOCNO']] = {
@@ -56,14 +58,13 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
             'text': ' '.join(doc['TEXT'])
         }
 
-    # Convert queries into the expected dictionary format.
-    # For BM25, pass the tokens as a list; for dense models, join them into a string.
+    # convert queries into the expected dictionary format
     query_dict = {}
     for query in queries:
         tokens = query.get('title', []) + query.get('query', []) + query.get('narrative', [])
         query_dict[query['num']] = ' '.join(tokens)
     
-    # Retrieve BM25 results (the same regardless of re-ranking type)
+    # retrieve BM25 results (the same regardless of re-ranking type)
     print("Ranking documents and showing progress bars. If for some reason progress bars get stuck, note that it is just a visual glitch. Everything is indeed loaded correctly.")
     
     print("Ranking top documents for all queries and creating associated file")
@@ -78,14 +79,16 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
     print("\nRanking top 100 documents for all queries and creating associated file. This is the file that will be used for final evaluation.")
     bm25_results = writeResultsTop100("../Results_Scores/BM25/Results.txt", queries, model, "top_100_best_run")
         
-    # Refine results with re-ranking using a dense model from sentence-transformers
+    # refine results with re-ranking using a dense model from sentence-transformers
+
+    # MINI LM model
     if reranking == "MINI_LM":
-        print("\nWe are in the MINI LM Branch. We are computing now.")
+        print("\nUsing MINI LM model.")
         mini_lm_model = create_model("mini-lm", "sentence-transformers/all-MiniLM-L6-v2", None, None, None)
         bm25_weight = 0.4
         mini_lm_weight = 0.6
         dense_scores = {}
-        print("We are iterating over the results retrieved from the initial IR system.")
+        print("Iterating over the results retrieved from the initial IR system.")
         for query_id, candidate_dict in bm25_results.items():
             query_text = query_dict[query_id]
             query_embedding = mini_lm_model.encode(query_text, convert_to_tensor=True)
@@ -93,13 +96,12 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
             candidate_texts = []
             for doc_id, _ in candidate_dict.items():
                 candidate_doc_ids.append(doc_id)
-                # Use both title and text for richer representation.
-                candidate_texts.append(corpus[doc_id]['title'] + " " + corpus[doc_id]['text'])
+                candidate_texts.append(corpus[doc_id]['title'] + " " + corpus[doc_id]['text']) # use both title and text for richer representation
             doc_embeddings = mini_lm_model.encode(candidate_texts, convert_to_tensor=True)
             cos_scores = util.cos_sim(query_embedding, doc_embeddings)[0].tolist()
             dense_scores[query_id] = {doc_id: score for doc_id, score in zip(candidate_doc_ids, cos_scores)}
         
-        print("We are using weighted sums now.")
+        print("Using weighted sums now.")
         combined_results = {}
         for query_id, candidate_dict in bm25_results.items():
             bm25_dict = candidate_dict
@@ -109,10 +111,104 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
         print("Results are being returned.")
         results = combined_results
     
+    # ELECTRA model
     elif reranking == "ELECTRA":
+        print("\nUsing ELECTRA model.")
         ELECTRA_model = create_model("cross-encoder", "cross-encoder/ms-marco-electra-base", None, None, None)
         reranker = Rerank(ELECTRA_model, batch_size=128)
         results = reranker.rerank(corpus, query_dict, bm25_results, top_k=100)
+
+    # BERT model
+    elif reranking == "BERT":
+        print("\nUsing BERT model.")
+        BERT_model = create_model("cross-encoder", "cross-encoder/nli-distilroberta-base", None, None, None)
+        reranker = CustomRerank(BERT_model, batch_size=128)
+        results = reranker.rerank(corpus, query_dict, bm25_results, top_k=100)
+    
+    # no neural re-ranking is set just use the base results from BM25
+    else:
+        results = bm25_results
+    
+    return results
+
+def neural_rank_documents_head_only(model_type, model_name, documents, inverted_index, documents_length, queries, reranking):
+    """
+    rank the documents using the specified model for only title
+    """
+
+    # initial retrieval using BM25
+    model = create_model(model_type, model_name, documents, inverted_index, documents_length)
+
+    # build a corpus dictionary from the documents using only TITLE
+    corpus = {}
+    for doc in documents:
+        corpus[doc['DOCNO']] = {
+            'title': ' '.join(doc['HEAD'])
+        }
+
+    # convert queries into the expected dictionary format
+    query_dict = {}
+    for query in queries:
+        tokens = query.get('title', []) + query.get('query', []) + query.get('narrative', [])
+        query_dict[query['num']] = ' '.join(tokens)
+    
+    # retrieve BM25 results (the same regardless of re-ranking type)
+    print("Ranking documents and showing progress bars. If for some reason progress bars get stuck, note that it is just a visual glitch. Everything is indeed loaded correctly.")
+
+    print("Ranking top documents for all queries and creating associated file")
+    writeResults("../Results_Scores/BM25/TopScoresAllQueries_head_only.txt", queries, model, "top_scores_run")
+    
+    print("\nRanking top 10 documents for the first 2 queries and creating associated file")
+    writeResultsTop10First2("../Results_Scores/BM25/Top10AnswersFirst2Queries_head_only.txt", queries, model, "top_10_first_2_run")
+    
+    print("\nRanking all documents for all queries and creating associated file")
+    writeResultsAll("../Results_Scores/BM25/AllScoresAllQueries_head_only.txt", queries, model, "all_scores_run")
+    
+    print("\nRanking top 100 documents for all queries and creating associated file.")
+    bm25_results = writeResultsTop100("../Results_Scores/BM25/Results_head_only.txt", queries, model, "top_100_best_run")
+    
+    # refine results with re-ranking using a dense model from sentence-transformers
+
+    # MINI LM model
+    if reranking == "MINI_LM":
+        print("\nUsing MINI LM model. This is for only TITLE/HEAD.")
+        mini_lm_model = create_model("mini-lm", "sentence-transformers/all-MiniLM-L6-v2", None, None, None)
+        bm25_weight = 0.4
+        mini_lm_weight = 0.6
+        dense_scores = {}
+        for query_id, candidate_dict in bm25_results.items():
+            query_text = query_dict[query_id]
+            query_embedding = mini_lm_model.encode(query_text, convert_to_tensor=True)
+            candidate_doc_ids = []
+            candidate_texts = []
+            for doc_id, _ in candidate_dict.items():
+                candidate_doc_ids.append(doc_id)
+                candidate_texts.append(corpus[doc_id]['title']) # use only the title for representation
+            doc_embeddings = mini_lm_model.encode(candidate_texts, convert_to_tensor=True)
+            cos_scores = util.cos_sim(query_embedding, doc_embeddings)[0].tolist()
+            dense_scores[query_id] = {doc_id: score for doc_id, score in zip(candidate_doc_ids, cos_scores)}
+        
+        combined_results = {}
+        for query_id, candidate_dict in bm25_results.items():
+            bm25_dict = candidate_dict
+            combined = total_score(bm25_dict, bm25_weight, dense_scores[query_id], mini_lm_weight)
+            combined_results[query_id] = sorted(combined.items(), key=lambda x: x[1], reverse=True)
+        
+        results = combined_results
+    
+    # ELECTRA model
+    elif reranking == "ELECTRA":
+        print("\nUsing ELECTRA model. This is for only TITLE/HEAD.")
+        ELECTRA_model = create_model("cross-encoder", "cross-encoder/ms-marco-electra-base", None, None, None)
+        reranker = CustomRerank(ELECTRA_model, batch_size=128) # the standard re-ranker is NOT used because it’s designed to work with richer document representations (i.e. both title and text)
+        results = reranker.rerank_head_only(corpus, query_dict, bm25_results, top_k=100)
+
+    # BERT model
+    elif reranking == "BERT":
+        print("\nUsing BERT model. This is for only TITLE/HEAD.")
+        BERT_model = create_model("cross-encoder", "cross-encoder/nli-distilroberta-base", None, None, None)
+        reranker = CustomRerank(BERT_model, batch_size=128)
+        results = reranker.rerank_head_only(corpus, query_dict, bm25_results, top_k=100)
     
     else:
         results = bm25_results
@@ -120,6 +216,9 @@ def neural_rank_documents(model_type, model_name, documents, inverted_index, doc
     return results
 
 def neural_save_results(results, output_file):
+    '''
+    save the results to a file path from the neural ranking models
+    '''
     lines = []
     for query_id, docs in results.items():
         if isinstance(docs, list):
@@ -135,7 +234,7 @@ def neural_save_results(results, output_file):
 
 def normalize_neural(ranked_docs):
     """
-    Normalize scores to [0,1] range.
+    normalize the scores in range [0, 1]
     """
     if not ranked_docs:
         return []
@@ -144,77 +243,3 @@ def normalize_neural(ranked_docs):
     if max_score == min_score:
         return [(doc_id, 1.0) for doc_id, _ in ranked_docs]
     return [(doc_id, (score - min_score) / (max_score - min_score)) for doc_id, score in ranked_docs]
-
-def neural_rank_documents_head_only(model_type, model_name, documents, inverted_index, documents_length, queries, reranking):
-    """
-    Head-only version: builds the corpus using only the document 'HEAD' (as title) and re-ranks accordingly.
-    """
-    # Initial retrieval with BM25
-    model = create_model(model_type, model_name, documents, inverted_index, documents_length)
-
-    # Build corpus using only the title (HEAD)
-    corpus = {}
-    for doc in documents:
-        corpus[doc['DOCNO']] = {
-            'title': ' '.join(doc['HEAD'])
-        }
-
-    # Build the query dictionary as before
-    query_dict = {}
-    for query in queries:
-        tokens = query.get('title', []) + query.get('query', []) + query.get('narrative', [])
-        query_dict[query['num']] = ' '.join(tokens)
-    
-    print("Ranking documents and showing progress bars. If for some reason progress bars get stuck, note that it is just a visual glitch. Everything is indeed loaded correctly.")
-
-    print("Ranking top documents for all queries and creating associated file")
-    writeResults("../Results_Scores/BM25/TopScoresAllQueries_head_only.txt", queries, model, "top_scores_run")
-    
-    print("\nRanking top 10 documents for the first 2 queries and creating associated file")
-    writeResultsTop10First2("../Results_Scores/BM25/Top10AnswersFirst2Queries_head_only.txt", queries, model, "top_10_first_2_run")
-    
-    print("\nRanking all documents for all queries and creating associated file")
-    writeResultsAll("../Results_Scores/BM25/AllScoresAllQueries_head_only.txt", queries, model, "all_scores_run")
-    
-    print("\nRanking top 100 documents for all queries and creating associated file.")
-    bm25_results = writeResultsTop100("../Results_Scores/BM25/Results_head_only.txt", queries, model, "top_100_best_run")
-        
-    # Re-ranking branches using only the title
-    if reranking == "MINI_LM":
-        print("\nMINI_LM head-only re-ranking branch.")
-        mini_lm_model = create_model("mini-lm", "sentence-transformers/all-MiniLM-L6-v2", None, None, None)
-        bm25_weight = 0.4
-        mini_lm_weight = 0.6
-        dense_scores = {}
-        for query_id, candidate_dict in bm25_results.items():
-            query_text = query_dict[query_id]
-            query_embedding = mini_lm_model.encode(query_text, convert_to_tensor=True)
-            candidate_doc_ids = []
-            candidate_texts = []
-            for doc_id, _ in candidate_dict.items():
-                candidate_doc_ids.append(doc_id)
-                # Use only the title for representation.
-                candidate_texts.append(corpus[doc_id]['title'])
-            doc_embeddings = mini_lm_model.encode(candidate_texts, convert_to_tensor=True)
-            cos_scores = util.cos_sim(query_embedding, doc_embeddings)[0].tolist()
-            dense_scores[query_id] = {doc_id: score for doc_id, score in zip(candidate_doc_ids, cos_scores)}
-        
-        combined_results = {}
-        for query_id, candidate_dict in bm25_results.items():
-            bm25_dict = candidate_dict
-            combined = total_score(bm25_dict, bm25_weight, dense_scores[query_id], mini_lm_weight)
-            combined_results[query_id] = sorted(combined.items(), key=lambda x: x[1], reverse=True)
-        
-        results = combined_results
-    
-    elif reranking == "ELECTRA":
-        print("\nELECTRA head-only re-ranking branch.")
-        ELECTRA_model = create_model("cross-encoder", "cross-encoder/ms-marco-electra-base", None, None, None)
-        # the standard re-ranker is NOT used because it’s designed to work with richer document representations (i.e., both title and text)
-        reranker = CustomRerank(ELECTRA_model, batch_size=128)
-        results = reranker.rerank_head_only(corpus, query_dict, bm25_results, top_k=100)
-    
-    else:
-        results = bm25_results
-    
-    return results

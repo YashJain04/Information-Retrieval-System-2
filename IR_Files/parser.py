@@ -1,8 +1,9 @@
+# imports
 import json
 
 def parse_document(document_line):
     """
-    Parse a single JSON line as a document
+    parse a single JSON line as a document
     """
     doc = json.loads(document_line)
     parsed_doc = {
@@ -14,7 +15,7 @@ def parse_document(document_line):
 
 def parse_documents_from_file(file_path):
     """
-    Read the JSON lines file and parse each document
+    read the JSON lines file and parse each document
     """
     with open(file_path, 'r', encoding='utf-8') as file:
         parsed_docs = [parse_document(line) for line in file]
@@ -22,7 +23,7 @@ def parse_documents_from_file(file_path):
 
 def parse_query(query_line):
     """
-    Parse a single JSON line as a query
+    parse a single JSON line as a query
     """
     query = json.loads(query_line)
     parsed_query = {
@@ -33,7 +34,7 @@ def parse_query(query_line):
 
 def parse_queries_from_file(file_path):
     """
-    Read the JSON lines file and parse each query
+    read the JSON lines file and parse each query
     """
     with open(file_path, 'r', encoding='utf-8') as file:
         parsed_queries = [parse_query(line) for line in file]
